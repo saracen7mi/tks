@@ -80,7 +80,11 @@
         .card { background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
 
         .header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        .action-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+        
         .btn-add { background: var(--success); color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
+        .btn-print { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
+        .btn-print:hover { background: var(--success); color: white; }
 
         .search-bar { width: 100%; padding: 10px 14px; background: #0b0f19; border: 1px solid var(--border); color: white; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box; margin-bottom: 15px; }
 
@@ -103,6 +107,17 @@
         .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
 
         footer { text-align: center; padding: 20px; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
+
+        /* STILOVI ZA ŠTAMPANJE / PDF */
+        @media print {
+            body { background-color: white !important; color: black !important; }
+            header, .filter-grid, .header-actions, .btn-edit, .user-bar, footer, .modal, .search-bar { display: none !important; }
+            .card { border: none !important; box-shadow: none !important; background: white !important; padding: 0 !important; }
+            .table-responsive { max-height: none !important; overflow: visible !important; border: none !important; }
+            table { font-size: 9pt !important; color: black !important; border: 1px solid #ccc !important; }
+            th { background-color: #f3f4f6 !important; color: black !important; border-bottom: 2px solid #ccc !important; }
+            td { border-bottom: 1px solid #e5e7eb !important; }
+        }
     </style>
 </head>
 <body>
@@ -144,7 +159,10 @@
             <div class="card">
                 <div class="header-actions">
                     <h2 style="margin:0; font-size:1.1rem;">📋 Pregled predmeta i izvještaja</h2>
-                    <button class="btn-add" onclick="openAddModal()">➕ Dodaj novi slučaj</button>
+                    <div class="action-buttons">
+                        <button class="btn-print" onclick="window.print()">🖨️ Ispiši u PDF</button>
+                        <button class="btn-add" onclick="openAddModal()">➕ Dodaj novi slučaj</button>
+                    </div>
                 </div>
 
                 <input type="text" id="searchBar" class="search-bar" placeholder="🔍 Pretraži po broju, oznaci slučaja, DNK uzorcima ili komentarima..." onkeyup="filterTable()">

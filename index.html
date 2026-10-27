@@ -160,7 +160,7 @@
                 <div class="header-actions">
                     <h2 style="margin:0; font-size:1.1rem;">📋 Pregled predmeta i izvještaja</h2>
                     <div class="action-buttons">
-                        <button class="btn-print" onclick="window.print()">🖨️ Ispiši u PDF</button>
+                        <button class="btn-print" onclick="generisiPDF()">🖨️ Ispiši u PDF</button>
                         <button class="btn-add" onclick="openAddModal()">➕ Dodaj novi slučaj</button>
                     </div>
                 </div>
@@ -308,6 +308,17 @@
                 item.status.toLowerCase().includes(search)
             );
             renderTable(filtered);
+        }
+
+        // FUNKCIJA ZA PRINT / PDF KOJA AUTOMATSKI BILJEŽI KORISNIKA U DNEVNIK PRISTUPA
+        function generisiPDF() {
+            let imeKorisnika = trenutniKorisnik || "Mirza Saračević";
+            
+            // Pošalji podatke u Google Sheet (DnevnikPristupa) da je napravljen ispis
+            fetch(`${SCRIPT_URL}?action=updateRecord&autor=${encodeURIComponent(imeKorisnika)}&komentar=${encodeURIComponent('Generisan PDF / Ispis izvještaja')}&status=${encodeURIComponent('PDF Export')}`).catch(() => {});
+
+            // Pokreni prozor za štampanje / čuvanje u PDF
+            window.print();
         }
 
         function openEditModal(br) {

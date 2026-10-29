@@ -77,7 +77,10 @@
         header p { color: var(--text-muted); margin-top: 5px; font-size: 0.9rem; }
 
         .container { max-width: 1400px; margin: 25px auto; padding: 0 15px; }
-        .card { background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .card { background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); margin-bottom: 25px; }
+
+        .section-title { font-size: 1.1rem; color: var(--accent); margin-top: 0; margin-bottom: 8px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        .section-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.4; }
 
         .header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
         .action-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -88,7 +91,7 @@
 
         .search-bar { width: 100%; padding: 10px 14px; background: #0b0f19; border: 1px solid var(--border); color: white; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box; margin-bottom: 15px; }
 
-        .table-responsive { overflow-x: auto; max-height: 700px; border-radius: 8px; border: 1px solid var(--border); }
+        .table-responsive { overflow-x: auto; max-height: 600px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 10px; }
         table { width: 100%; border-collapse: collapse; font-size: 0.83rem; text-align: left; }
         th, td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
         th { color: var(--text-muted); background-color: #1a2332; font-weight: 600; text-transform: uppercase; font-size: 0.7rem; position: sticky; top: 0; z-index: 10; }
@@ -111,8 +114,8 @@
         /* STILOVI ZA ŠTAMPANJE / PDF */
         @media print {
             body { background-color: white !important; color: black !important; }
-            header, .filter-grid, .header-actions, .btn-edit, .user-bar, footer, .modal, .search-bar { display: none !important; }
-            .card { border: none !important; box-shadow: none !important; background: white !important; padding: 0 !important; }
+            header, .header-actions, .btn-edit, .user-bar, footer, .modal, .search-bar { display: none !important; }
+            .card { border: none !important; box-shadow: none !important; background: white !important; padding: 0 !important; margin-bottom: 20px !important; }
             .table-responsive { max-height: none !important; overflow: visible !important; border: none !important; }
             table { font-size: 9pt !important; color: black !important; border: 1px solid #ccc !important; }
             th { background-color: #f3f4f6 !important; color: black !important; border-bottom: 2px solid #ccc !important; }
@@ -156,9 +159,10 @@
         </header>
 
         <div class="container">
+            <!-- DINAMIČKA TABELA (APPS SCRIPT DATA) -->
             <div class="card">
                 <div class="header-actions">
-                    <h2 style="margin:0; font-size:1.1rem;">📋 Pregled predmeta i izvještaja</h2>
+                    <h2 style="margin:0; font-size:1.1rem;">📋 Pregled predmeta i izvještaja (Aktivni slučajevi)</h2>
                     <div class="action-buttons">
                         <button class="btn-print" onclick="window.print()">🖨️ Ispiši u PDF</button>
                         <button class="btn-add" onclick="openAddModal()">➕ Dodaj novi slučaj</button>
@@ -183,6 +187,75 @@
                     </table>
                 </div>
             </div>
+
+            <!-- TABELA 8: Slučajevi definirani kao materijal za kosturnicu (Strane 40-41) -->
+            <div class="card">
+                <h3 class="section-title">8. Slučajevi definirani kao materijal za kosturnicu (Strane 40-41)</h3>
+                <p class="section-desc">
+                    Akumulirani fragmentarni skeletni materijal označen kao "materijal za kosturnicu" zbog nemogućnosti povezivanja ili izolovanja DNK.
+                </p>
+
+                <div class="table-responsive">
+                    <table id="tblKosturnica">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">Br.</th>
+                                <th>Oznaka slučaja</th>
+                                <th>Komentar</th>
+                                <th style="width: 250px;">Preporuka INO</th>
+                                <th style="width: 80px; text-align: center;">Akcija</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TABELA 9: Slučajevi koji sadrže skeletne elemente sa profilima DNK bez podudarnosti (Strane 42-50, izbačeni 10, 140, 142 i 143) -->
+            <div class="card">
+                <h3 class="section-title">9. Slučajevi sa profilima DNK bez podudarnosti (Strane 42-50)</h3>
+                <p class="section-desc">
+                    Slučajevi sa generiranim profilima DNK bez podudarnosti. Izbačeni redni brojevi 10, 140, 142 i 143. Svi predmeti sadrže automatsku preporuku INO.
+                </p>
+
+                <div class="table-responsive">
+                    <table id="tblBezPodudaranja">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">Br.</th>
+                                <th>Oznaka slučaja</th>
+                                <th style="width: 120px; text-align: center;">Br. setova</th>
+                                <th style="width: 250px;">Preporuka INO</th>
+                                <th style="width: 80px; text-align: center;">Akcija</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TABELA 10: Spisak slučajeva koji zahtijevaju ponovno dostavljanje uzoraka za analizu DNK -->
+            <div class="card">
+                <h3 class="section-title">10. Slučajevi koji zahtijevaju ponovno dostavljanje uzoraka za analizu DNK</h3>
+                <p class="section-desc">
+                    Slučajevi iz kojih ranije nije uspješno izolovan profil DNK (ova tabela nema posebnu rubriku Preporuka INO).
+                </p>
+
+                <div class="table-responsive">
+                    <table id="tblPonovnoUzorkovanje">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">Br.</th>
+                                <th>Oznaka slučaja</th>
+                                <th style="width: 140px; text-align: center;">Br. skeletnih setova</th>
+                                <th style="width: 80px; text-align: center;">Akcija</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
 
         <footer>
@@ -210,17 +283,24 @@
                     <input type="text" name="uzorci" id="modalUzorci" placeholder="Oznaka uzoraka...">
                 </div>
 
-                <label style="font-size:0.8rem; color:var(--text-muted);">Status slučaja:</label>
-                <select name="status" id="modalStatus">
-                    <option value="Potrebna reasocijacija">Potrebna reasocijacija</option>
-                    <option value="Identifikovan">Identifikovan</option>
-                    <option value="U toku / Provjera">U toku / Provjera</option>
-                    <option value="Ostalo">Ostalo</option>
-                </select>
+                <div id="statusGroup">
+                    <label style="font-size:0.8rem; color:var(--text-muted);">Status slučaja:</label>
+                    <select name="status" id="modalStatus">
+                        <option value="Potrebna reasocijacija">Potrebna reasocijacija</option>
+                        <option value="Identifikovan">Identifikovan</option>
+                        <option value="U toku / Provjera">U toku / Provjera</option>
+                        <option value="Ostalo">Ostalo</option>
+                    </select>
+                </div>
 
-                <label style="font-size:0.8rem; color:var(--text-muted);">Komentar / Preporuka:</label>
+                <label style="font-size:0.8rem; color:var(--text-muted);" id="labelKomentar">Komentar / Detalji:</label>
                 <textarea name="komentar" id="modalKomentar" rows="4" placeholder="Unesi ili dopuni komentar..."></textarea>
                 
+                <div id="preporukaGroup" style="display:none;">
+                    <label style="font-size:0.8rem; color:var(--text-muted);">Preporuka INO:</label>
+                    <textarea name="preporukaIno" id="modalPreporukaIno" rows="2" placeholder="Unesi preporuku..."></textarea>
+                </div>
+
                 <div class="modal-actions">
                     <button type="button" class="btn-edit" style="background:transparent; color:var(--text-muted); border-color:var(--border);" onclick="closeModal()">Otkaži</button>
                     <button type="submit" class="btn-edit" style="background:var(--accent); color:white;">Spremi 💾</button>
@@ -234,6 +314,223 @@
         let isSubmitting = false;
         let trenutniKorisnik = "";
         let sviSlucajevi = [];
+        let aktivnaTabela = "main";
+
+        const DEFAULT_PREPORUKA = "trajni ukop nakon očitovanja Tužilaštva";
+
+        // TABELA 8: Slučajevi definirani kao materijal za kosturnicu (Strane 40-41)
+        let podaciKosturnica = [
+            {br: "1", oznaka: "Žerovanj - Reekshumacija Visoko - L.B. DIO DONJE VILICE NN 29A KRI-85/99", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "2", oznaka: "MILJEVINA-FOČA MASOVNA GROBNICA M-K", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "3", oznaka: "FOČA-GREBAK-PREDOLA MIJEŠANE KOSTI NN", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "4", oznaka: "FOČA - OBRUŠENI TUNELI MIJEŠANE KOSTI 1", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "5", oznaka: "KORITO RIJEKE DOBROPOLIKE BR.1 garderoba od tijela 1 i 3", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "6", oznaka: "GRADSKA GROBLJA VISOKO NN KOSTI a(-2)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "7", oznaka: "BRDO \"ŽUČ\" NN-1", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "8", oznaka: "LOK. JAMA PILJAK LIJEVO REBRO I 4 FRAGMENTA MIJEŠANE KOSTI", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "9", oznaka: "IVAZOVIĆI - SOKOLAC MIJEŠANE KOSTI (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "10", oznaka: "JELAŠCA KALINOVIK. NN-1 (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "11", oznaka: "BUDIĆIN POTOK ŽEPA HAN PIJESAK NN-1 (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "12", oznaka: "PAPRATNO - FOČA NN vreća mj kosti (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "13", oznaka: "SOKOLAC NN-1 (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "14", oznaka: "ZAMRŠTEN, FOČA NN-4 (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "15", oznaka: "ZAMRŠTEN, FOČA NN-2 (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "16", oznaka: "ZAMRŠTEN, FOČA NN-2 (G.G. VISOKO) - 2", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "17", oznaka: "ROGATICA GG-01 NN-1 (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "18", oznaka: "RATINE-FOČA-IZG.UGU.KOSTI OD 5-24 (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "19", oznaka: "RATINE-FOČA-OZN-VR.PEP-2 (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "20", oznaka: "RATINE-FOČA-OZN-VR.PEP-3 (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "21", oznaka: "RATINE-FOČA-OZN.VR. IZ. UGLI. KOSTI-4 (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "22", oznaka: "RATINE-FOČA-OZN.VR.PEP. III (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "23", oznaka: "KREMENAC, FOČA NN-IZG. KOSTI (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "24", oznaka: "POLICE, FOČA NN-lobanja (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "25", oznaka: "SUSJEŠNO, FOČA NN-2 (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "26", oznaka: "SUSJEŠNO, FOČA NN-1 (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "27", oznaka: "TABACI, FOČA NN-2 (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "28", oznaka: "OPŠTINA SOKOLAC NN-1 (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "29", oznaka: "GOĐENJE, HAN PIJESAK NN (G.G. VISOKO)", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA},
+            {br: "30", oznaka: "VISOKO 3 VREĆE II", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA}
+        ];
+
+        // TABELA 9: Slučajevi sa profilima bez podudarnosti (Spojeno od str. 42 do 50, izbačeni 10, 140, 142 i 143)
+        let podaciBezPodudaranja = [
+            {br: "1", oznaka: "PAKLENIK NN-24A (REEKSHUMACIJA VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "2", oznaka: "ŽEROVANJ-BANJER KOSA, ILIJAŠ NN-21 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "3", oznaka: "ŽEROVANJ-BANJER KOSA, ILIJAŠ NN-26 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "4", oznaka: "ŽEROVANJ-BANJER KOSA, ILIJAŠ NN (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "5", oznaka: "VLAKOVO NN-kosti (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "6", oznaka: "VLAKOVO NN-10 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "7", oznaka: "VLAKOVO NN-01 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "8", oznaka: "VLAKOVO NN-69 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "9", oznaka: "Miljevići NN-5 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            // REDNI BROJ 10 JE IZBAČEN
+            {br: "11", oznaka: "Svrake-Semizovac NN-29 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "12", oznaka: "Svrake-Semizovac NN-38 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "13", oznaka: "Svrake-Semizovac NN-40 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "14", oznaka: "Svrake-Semizovac NN-41 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "15", oznaka: "Svrake-Semizovac NN-03 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "16", oznaka: "HADŽIĆI NN-1 (G.G. VISOKO)", setovi: "2", preporuka: DEFAULT_PREPORUKA},
+            {br: "17", oznaka: "Bol. Jagomir, Sarajevo Kri-124/96 NN (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "18", oznaka: "TEKUJA, FOČA NN-1C (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "19", oznaka: "KOKOVIĆI-HADŽIĆI NN (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "20", oznaka: "NEDŽARIĆI NN-2 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "21", oznaka: "PRAVOSLAVNO GROBLJE \"REPCI\" PALE-RS NN (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "22", oznaka: "G. Luka Ilijaš NN (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "23", oznaka: "RASADNIK-ROGATICA NN (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "24", oznaka: "POLJINE NN-2 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "25", oznaka: "JOŠANICA, VOGOŠĆA NN (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "26", oznaka: "VRANJEŠ NN-13 (G.G. VISOKO)", setovi: "2", preporuka: DEFAULT_PREPORUKA},
+            {br: "27", oznaka: "VRANJEŠ NN-22 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "28", oznaka: "VRANJEŠ NN-30 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "29", oznaka: "VRANJEŠ NN-50B (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "30", oznaka: "VRANJEŠ NN-11 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "31", oznaka: "VRANJEŠ NN-17 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "32", oznaka: "VRANJEŠ NN-49B (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "33", oznaka: "VRANJEŠ NN-53 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "34", oznaka: "VRANJEŠ NN-1, KRI 76-99 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "35", oznaka: "VRANJEŠ NN-4, KRI-76/99 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "36", oznaka: "VRANJEŠ NN-13, KRI-76/99 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "37", oznaka: "Miljevići NN-7 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "38", oznaka: "BOLNICA SOKOLAC NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "39", oznaka: "Stadion Sarajevo NN-5 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "40", oznaka: "Stadion Sarajevo NN-8 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "41", oznaka: "Stadion Sarajevo NN-9 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "42", oznaka: "Stadion Sarajevo NN-24 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "43", oznaka: "Stadion Sarajevo NN-10 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "44", oznaka: "Stadion Sarajevo NN-15 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "45", oznaka: "Stadion Sarajevo NN-17 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "46", oznaka: "Stadion Sarajevo NN-18 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "47", oznaka: "KAT. GROBLJE VRANJEŠ NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "48", oznaka: "KAT. GROBLJE VRANJEŠ NN-2 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "49", oznaka: "KAT. GROBLJE VRANJEŠ NN-3 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "50", oznaka: "KAT. GROBLJE VRANJEŠ NN-6 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "51", oznaka: "KAT. GROBLJE VRANJEŠ NN-7 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "52", oznaka: "MILJEVINA, FOČA. GROBNICA I NN-7 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "53", oznaka: "MILJEVINA, FOČA. GROBNICA I NN-21 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "54", oznaka: "DUŠEVNA BOLNICA SOKOLAC NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "55", oznaka: "DUŠEVNA BOLNICA SOKOLAC NN-2 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "56", oznaka: "DUŠEVNA BOLNICA SOKOLAC NN-5 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "57", oznaka: "DUŠEVNA BOLNICA SOKOLAC NN-6 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "58", oznaka: "DUŠEVNA BOLNICA SOKOLAC NN-8 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "59", oznaka: "Duševna bolnica Jagomir Sarajevo NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "60", oznaka: "Duševna bolnica Jagomir Sarajevo NN-3 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "61", oznaka: "Duševna bolnica Jagomir Sarajevo NN-6 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "62", oznaka: "Lješevo, Ilijaš NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "63", oznaka: "KAMENICA-CRNA RIJEKA, ILIJAŠ NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "64", oznaka: "ALADŽA, FOČA NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "65", oznaka: "ROGATICA NN (G.G. VISOKO)", setovi: "2", preporuka: DEFAULT_PREPORUKA},
+            {br: "66", oznaka: "Groblje Stadion Sarajevo NN (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "67", oznaka: "RIJEKA BOSNA-DOBROŠEVIĆI NN (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "68", oznaka: "Malešići-Korita NN (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "69", oznaka: "TIHOVIĆI-VRAPČE VOGOŠĆA NN-2 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "70", oznaka: "TREBEĆAJ-KRSINJE, TRNOVO NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "71", oznaka: "Miljevići NN-2 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "72", oznaka: "TROŠANJ, FOČA NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "73", oznaka: "Kozarde, Rogatica NN-5 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "74", oznaka: "GUNČAR, HADŽIĆI NN LOBANJA (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "75", oznaka: "GRADSKO GROBLJE VLAKOVO, SARAJEVO NN-2 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "76", oznaka: "MRTVAČNICA KOŠEVO NN-21 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "77", oznaka: "MRTVAČNICA KOŠEVO NN-LOBANJA (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "78", oznaka: "Mezarje Mihovine, Kalinovik RS NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "79", oznaka: "MEZARJE KOVAČI-HRASNICA, ILIDŽA NN-2 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "80", oznaka: "MEZARJE KOVAČI-HRASNICA, ILIDŽA NN-3 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "81", oznaka: "MEZARJE KOVAČI-HRASNICA, ILIDŽA NN-6 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "82", oznaka: "NN (AT NN5) (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "83", oznaka: "Tekija, Foča. NN-7 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "84", oznaka: "GROBLJE STADION, SARAJEVO. NN-6 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "85", oznaka: "TREBAVA, FOČA. NN-2 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "86", oznaka: "TREBAVA, FOČA. NN-3 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "87", oznaka: "MEZARJE, BUDAKOVIĆI NN-5 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "88", oznaka: "SELIJANI, ROGATICA NN-22 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "89", oznaka: "BOROVSKO, ROGATICA NN-lobanja (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "90", oznaka: "DUŠEVNA BOLNICA - SOKOLAC NN-2 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "91", oznaka: "ŠIJAK BJELAŠNICA NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "92", oznaka: "VLAKOVO SARAJEVO NN-3 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "93", oznaka: "Bijambare-šuma Kozlovac, Ilijaš NN lobanja (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "94", oznaka: "KOVAČI HRASNICA NN (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "95", oznaka: "OŠTRIK, RAKOVICA ILIDŽA NN (G.G.VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "96", oznaka: "KAMENOLOM DUPOVCI, HADŽIĆI NN (G.G. VISOKO)", setovi: "2", preporuka: DEFAULT_PREPORUKA},
+            {br: "97", oznaka: "MUSLIMANSKO GROBLJE, PALE RS NN (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "98", oznaka: "RE-EX: G.G. \"STRAŽIŠTE\" VIŠEGRAD NN-45 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "99", oznaka: "RE-EX: G.G. \"STRAŽIŠTE\" VIŠEGRAD NN-22 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "100", oznaka: "RE-EX: G.G. \"STRAŽIŠTE\" VIŠEGRAD NN-7 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "101", oznaka: "MALEŠIĆI, ILIJAŠ NN (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "102", oznaka: "PREUZETO-MRTVAČNICA KOŠEVO NN-4 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "103", oznaka: "KURTALIĆI-VIŠEGRAD-BB-071003-L FEMUR-NN-2 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "104", oznaka: "BRDO ŽUČ, OPĆINA NOVI GRAD NN (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "105", oznaka: "Stadion Sarajevo NN-11 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "106", oznaka: "VUKASOVIĆI-ILIJAŠ NN-4 (G.G. VISOKO)", setovi: "2", preporuka: DEFAULT_PREPORUKA},
+            {br: "107", oznaka: "VUKASOVIĆI-ILIJAŠ NN-34 (G.G. VISOKO)", setovi: "3**", preporuka: DEFAULT_PREPORUKA},
+            {br: "108", oznaka: "ROGATICA NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "109", oznaka: "ROGATICA NN-2 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "110", oznaka: "SARAJEVO, BANE ŠURBATA NN-12 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "111", oznaka: "PREUZETO-MRTVAČNICA KOŠEVO NN-10 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "112", oznaka: "MILJEVINA, FOČA. GROBNICA II NN-14 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "113", oznaka: "VRANJEŠ-MILJEVIĆI NN-10 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "114", oznaka: "VRANJEŠ NN-23 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "115", oznaka: "GRAISELSKO POLJE-KALINOVIK NN-3 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "116", oznaka: "OPĆINA ILIDŽA UL.MAGISTRALA br.29. KRUG ELEKTROPRENOS NN (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "117", oznaka: "PREUZETO-MRTVAČNICA KOŠEVO NN-1 KRI-233/02 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "118", oznaka: "PREUZETO-MRTVAČNICA KOŠEVO NN-1 KRI-258/01 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "119", oznaka: "PREUZETO-MRTVAČNICA KOŠEVO NN-30 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "120", oznaka: "PREUZETO-MRTVAČNICA KOŠEVO NN-33 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "121", oznaka: "KREMENAC, FOČA NN-3 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "122", oznaka: "KREMENAC, FOČA NN-6 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "123", oznaka: "PALE RS NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "124", oznaka: "KAMENOLOM KRUPAC (re-ex. G. Stup) NN-1a, 1b (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "125", oznaka: "VRANJEŠ, RS NN 42-A i SITNE KOSTI (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "126", oznaka: "ILIJINA JAMA, KALINOVIK NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "127", oznaka: "ILIJINA JAMA, KALINOVIK NN-2 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "128", oznaka: "ILIJINA JAMA, KALINOVIK NN-3 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "129", oznaka: "ILIJINA JAMA, KALINOVIK NN-4 I VREĆA MK (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "130", oznaka: "JAMA PILJAK NN-33 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "131", oznaka: "MILJEVIĆI - POJEDINAČNA NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "132", oznaka: "TEKIJA, FOČA NN-1B (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "133", oznaka: "TEKIJA, FOČA NN-1A (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "134", oznaka: "VJETRENIK, SOKOLAC NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "135", oznaka: "PREUZETO-MRTVAČNICA KOŠEVO NN-1 lobanja (126/03) (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "136", oznaka: "PREUZETO-MRTVAČNICA KOŠEVO NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "137", oznaka: "PREUZETO-MRTVAČNICA KOŠEVO NN-11 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "138", oznaka: "TIHOVIĆI, VOGOŠĆA NN-7 (G.G. VISOKO)", setovi: "3", preporuka: DEFAULT_PREPORUKA},
+            {br: "139", oznaka: "TIHOVIĆI, VOGOŠĆA NN-14 (G.G. VISOKO)", setovi: "2**", preporuka: DEFAULT_PREPORUKA},
+            // REDNI BROJ 140 JE IZBAČEN
+            {br: "141", oznaka: "VLAKOVO NN-8 (G.G. VISOKO)", setovi: "2**", preporuka: DEFAULT_PREPORUKA},
+            // REDNI BROJEVI 142 I 143 SU IZBAČENI
+            {br: "144", oznaka: "PETROVAČKA KRIVINA TREBEVIĆ NN-11 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "145", oznaka: "PETROVAČKA KRIVINA TREBEVIĆ NN-25 (G.G. VISOKO)", setovi: "2**", preporuka: DEFAULT_PREPORUKA},
+            {br: "146", oznaka: "IVAZOVIĆI-SOKOLAC NN-1 (G.G. VISOKO)", setovi: "3", preporuka: DEFAULT_PREPORUKA},
+            {br: "147", oznaka: "IVAZOVIĆI-SOKOLAC NN-2 (G.G. VISOKO)", setovi: "2**", preporuka: DEFAULT_PREPORUKA},
+            {br: "148", oznaka: "MILJEVINA NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "149", oznaka: "MILJEVINA NN-3 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "150", oznaka: "MILJEVINA NN-8 (G.G. VISOKO)", setovi: "1**", preporuka: DEFAULT_PREPORUKA},
+            {br: "151", oznaka: "TIHOVIĆI-VRAPČE VOGOŠĆA NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "152", oznaka: "TIHOVIĆI-VRAPČE VOGOŠĆA NN MK 1-5 (G.G. VISOKO)", setovi: "1**", preporuka: DEFAULT_PREPORUKA},
+            {br: "153", oznaka: "Mj. Kosti IP 43BP, 45BP, i NN (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "154", oznaka: "PREUZETO SA GROBLJA \"VLAKOVO\" NN-1 (G.G. VISOKO)", setovi: "2", preporuka: DEFAULT_PREPORUKA},
+            {br: "155", oznaka: "PREUZETO NA GROBLJU VLAKOVO NN-1 (G.G. VISOKO)", setovi: "2**", preporuka: DEFAULT_PREPORUKA},
+            {br: "156", oznaka: "G. Mojmilo NN-1 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "157", oznaka: "VRANJEŠ NN-10, KRI 76-99 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "158", oznaka: "Pitine stijene, Stari grad NN (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "159", oznaka: "PREUZETO-MRTVAČNICA KOŠEVO NN-3 (G.G. VISOKO)", setovi: "2**", preporuka: DEFAULT_PREPORUKA},
+            {br: "160", oznaka: "PREUZETO-MRTVAČNICA KOŠEVO NN-24 (G.G. VISOKO)", setovi: "1**", preporuka: DEFAULT_PREPORUKA},
+            {br: "161", oznaka: "RE-EX: G.G. \"STRAŽIŠTE\" VIŠEGRAD MJ. KOSTI-SEKTOR \"C\" (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "162", oznaka: "PREUZETO-MRTVAČNICA KOŠEVO NN-36 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
+            {br: "163", oznaka: "JAMA PAKLENIK - PK36B - MK (G.G. VISOKO)", setovi: "2", preporuka: DEFAULT_PREPORUKA},
+            {br: "164", oznaka: "MILJEVIĆI - VREĆA SA KOSTIMA (183/96) (G.G. VISOKO)", setovi: "22", preporuka: DEFAULT_PREPORUKA},
+            {br: "165", oznaka: "IVAN POLJE II NN-4C (G.G. VISOKO)", setovi: "4", preporuka: DEFAULT_PREPORUKA},
+            {br: "166", oznaka: "ILIJAŠ NN-1 (G.G. VISOKO)", setovi: "5", preporuka: DEFAULT_PREPORUKA},
+            {br: "167", oznaka: "ILIJAŠ NN-4 (G.G. VISOKO)", setovi: "2**", preporuka: DEFAULT_PREPORUKA},
+            {br: "168", oznaka: "ILIJAŠ NN-5 (G.G. VISOKO)", setovi: "3**", preporuka: DEFAULT_PREPORUKA},
+            {br: "169", oznaka: "ILIJAŠ NN-3 (G.G. VISOKO)", setovi: "4**", preporuka: DEFAULT_PREPORUKA},
+            {br: "170", oznaka: "ILIJAŠ NN-2 (G.G. VISOKO)", setovi: "2**", preporuka: DEFAULT_PREPORUKA}
+        ];
+
+        // TABELA 10: Spisak slučajeva koji zahtijevaju ponovno dostavljanje uzoraka za analizu DNK
+        let podaciPonovnoUzorkovanje = [
+            {br: "171", oznaka: "MILJEVIĆI NN-DONJI DIO SKELETA (G.G. VISOKO)", setovi: "1"},
+            {br: "172", oznaka: "NN-MIJEŠANE KOSTI KTA-83/08-RZ (G.G. VISOKO)", setovi: "3"},
+            {br: "173", oznaka: "VLAKOVO NN-53 (G.G. VISOKO)", setovi: "1"}
+        ];
 
         function handleLogin(e) {
             e.preventDefault();
@@ -258,6 +555,7 @@
                 document.getElementById('loginScreen').style.display = "none";
                 document.getElementById('mainApp').style.display = "block";
                 loadData();
+                renderStaticTables();
             }, 400);
         }
 
@@ -273,12 +571,13 @@
                 .then(data => {
                     if (data.slucajevi) {
                         sviSlucajevi = data.slucajevi;
-                        renderTable(sviSlucajevi);
+                        renderMainTable(sviSlucajevi);
                     }
-                });
+                })
+                .catch(() => {});
         }
 
-        function renderTable(dataList) {
+        function renderMainTable(dataList) {
             let tbody = document.querySelector('#tblVisoko tbody');
             tbody.innerHTML = '';
 
@@ -293,7 +592,50 @@
                     <td><code>${item.uzorci || '-'}</code></td>
                     <td style="color:#d1d5db; font-style:italic;">${item.komentar || '-'}</td>
                     <td style="text-align: center;"><span class="tag ${tagClass}">${item.status}</span></td>
-                    <td style="text-align: center;"><button class="btn-edit" onclick="openEditModal('${item.br}')">✏️ Uredi</button></td>
+                    <td style="text-align: center;"><button class="btn-edit" onclick="openEditModal('main', '${item.br}')">✏️ Uredi</button></td>
+                `;
+            });
+        }
+
+        function renderStaticTables() {
+            // Tabela 8
+            let tbodyKost = document.querySelector('#tblKosturnica tbody');
+            tbodyKost.innerHTML = '';
+            podaciKosturnica.forEach(item => {
+                let row = tbodyKost.insertRow();
+                row.innerHTML = `
+                    <td><strong>${item.br}</strong></td>
+                    <td>${item.oznaka}</td>
+                    <td style="color:#d1d5db; font-style:italic;">${item.komentar}</td>
+                    <td style="color:#93c5fd; font-weight:500;">${item.preporuka || DEFAULT_PREPORUKA}</td>
+                    <td style="text-align: center;"><button class="btn-edit" onclick="openEditModal('kosturnica', '${item.br}')">✏️ Uredi</button></td>
+                `;
+            });
+
+            // Tabela 9
+            let tbodyBez = document.querySelector('#tblBezPodudaranja tbody');
+            tbodyBez.innerHTML = '';
+            podaciBezPodudaranja.forEach(item => {
+                let row = tbodyBez.insertRow();
+                row.innerHTML = `
+                    <td><strong>${item.br}</strong></td>
+                    <td>${item.oznaka}</td>
+                    <td style="text-align:center;"><code>${item.setovi}</code></td>
+                    <td style="color:#93c5fd; font-weight:500;">${item.preporuka || DEFAULT_PREPORUKA}</td>
+                    <td style="text-align: center;"><button class="btn-edit" onclick="openEditModal('bezPodudaranja', '${item.br}')">✏️ Uredi</button></td>
+                `;
+            });
+
+            // Tabela 10
+            let tbodyPon = document.querySelector('#tblPonovnoUzorkovanje tbody');
+            tbodyPon.innerHTML = '';
+            podaciPonovnoUzorkovanje.forEach(item => {
+                let row = tbodyPon.insertRow();
+                row.innerHTML = `
+                    <td><strong>${item.br}</strong></td>
+                    <td>${item.oznaka}</td>
+                    <td style="text-align:center;"><code>${item.setovi}</code></td>
+                    <td style="text-align: center;"><button class="btn-edit" onclick="openEditModal('ponovno', '${item.br}')">✏️ Uredi</button></td>
                 `;
             });
         }
@@ -307,28 +649,67 @@
                 item.komentar.toLowerCase().includes(search) ||
                 item.status.toLowerCase().includes(search)
             );
-            renderTable(filtered);
+            renderMainTable(filtered);
         }
 
-        function openEditModal(br) {
-            let item = sviSlucajevi.find(x => String(x.br) === String(br));
-            if (!item) return;
-
+        function openEditModal(tip, br) {
+            aktivnaTabela = tip;
             document.getElementById('modalAction').value = "updateRecord";
             document.getElementById('addFields').style.display = "none";
-            document.getElementById('modalId').value = item.br;
             document.getElementById('modalAutor').value = trenutniKorisnik;
-            document.getElementById('modalTitle').innerText = `Uredi predmet (Br. ${item.br})`;
-            document.getElementById('modalStatus').value = item.status || "Potrebna reasocijacija";
-            document.getElementById('modalKomentar').value = item.komentar || "";
+
+            if (tip === 'main') {
+                let item = sviSlucajevi.find(x => String(x.br) === String(br));
+                if (!item) return;
+                document.getElementById('statusGroup').style.display = "block";
+                document.getElementById('preporukaGroup').style.display = "none";
+                document.getElementById('labelKomentar').innerText = "Komentar / Detalji:";
+                document.getElementById('modalId').value = item.br;
+                document.getElementById('modalTitle').innerText = `Uredi predmet (Br. ${item.br})`;
+                document.getElementById('modalStatus').value = item.status || "Potrebna reasocijacija";
+                document.getElementById('modalKomentar').value = item.komentar || "";
+            } else if (tip === 'kosturnica') {
+                let item = podaciKosturnica.find(x => String(x.br) === String(br));
+                if (!item) return;
+                document.getElementById('statusGroup').style.display = "none";
+                document.getElementById('preporukaGroup').style.display = "block";
+                document.getElementById('labelKomentar').innerText = "Komentar / Stanje:";
+                document.getElementById('modalId').value = item.br;
+                document.getElementById('modalTitle').innerText = `Uredi predmet (Br. ${item.br})`;
+                document.getElementById('modalKomentar').value = item.komentar || "";
+                document.getElementById('modalPreporukaIno').value = item.preporuka || DEFAULT_PREPORUKA;
+            } else if (tip === 'bezPodudaranja') {
+                let item = podaciBezPodudaranja.find(x => String(x.br) === String(br));
+                if (!item) return;
+                document.getElementById('statusGroup').style.display = "none";
+                document.getElementById('preporukaGroup').style.display = "block";
+                document.getElementById('labelKomentar').innerText = "Oznaka slučaja:";
+                document.getElementById('modalId').value = item.br;
+                document.getElementById('modalTitle').innerText = `Uredi predmet (Br. ${item.br})`;
+                document.getElementById('modalKomentar').value = item.oznaka || "";
+                document.getElementById('modalPreporukaIno').value = item.preporuka || DEFAULT_PREPORUKA;
+            } else if (tip === 'ponovno') {
+                let item = podaciPonovnoUzorkovanje.find(x => String(x.br) === String(br));
+                if (!item) return;
+                document.getElementById('statusGroup').style.display = "none";
+                document.getElementById('preporukaGroup').style.display = "none";
+                document.getElementById('labelKomentar').innerText = "Oznaka slučaja:";
+                document.getElementById('modalId').value = item.br;
+                document.getElementById('modalTitle').innerText = `Uredi predmet (Br. ${item.br})`;
+                document.getElementById('modalKomentar').value = item.oznaka || "";
+            }
 
             document.getElementById('editModal').style.display = 'flex';
             document.getElementById('editForm').action = SCRIPT_URL;
         }
 
         function openAddModal() {
+            aktivnaTabela = "main";
             document.getElementById('modalAction').value = "addRecord";
             document.getElementById('addFields').style.display = "block";
+            document.getElementById('statusGroup').style.display = "block";
+            document.getElementById('preporukaGroup').style.display = "none";
+            document.getElementById('labelKomentar').innerText = "Komentar / Detalji:";
             document.getElementById('modalAutor').value = trenutniKorisnik;
             document.getElementById('modalTitle').innerText = "➕ Dodaj novi slučaj";
             document.getElementById('modalBr').value = sviSlucajevi.length + 1;
@@ -348,28 +729,55 @@
             isSubmitting = true;
             let action = document.getElementById('modalAction').value;
             let vrijemeSada = new Date().toLocaleString("bs-BA");
+            let unetiKomentar = document.getElementById('modalKomentar').value;
+            let unetaPreporuka = document.getElementById('modalPreporukaIno').value;
 
-            if (action === "addRecord") {
-                let novBr = document.getElementById('modalBr').value;
-                let novaOznaka = document.getElementById('modalOznaka').value;
-                let noviUzorci = document.getElementById('modalUzorci').value;
-                let novStat = document.getElementById('modalStatus').value;
-                let novKom = document.getElementById('modalKomentar').value + ` (Kreirao: ${trenutniKorisnik} - ${vrijemeSada})`;
+            if (aktivnaTabela === "main") {
+                if (action === "addRecord") {
+                    let novBr = document.getElementById('modalBr').value;
+                    let novaOznaka = document.getElementById('modalOznaka').value;
+                    let noviUzorci = document.getElementById('modalUzorci').value;
+                    let novStat = document.getElementById('modalStatus').value;
+                    let novKom = unetiKomentar + ` (Kreirao: ${trenutniKorisnik} - ${vrijemeSada})`;
 
-                sviSlucajevi.push({ br: novBr, oznaka: novaOznaka, uzorci: noviUzorci, komentar: novKom, status: novStat });
-            } else {
-                let id = document.getElementById('modalId').value;
-                let novStat = document.getElementById('modalStatus').value;
-                let novKom = document.getElementById('modalKomentar').value + ` (Ažurirao: ${trenutniKorisnik} - ${vrijemeSada})`;
+                    sviSlucajevi.push({ br: novBr, oznaka: novaOznaka, uzorci: noviUzorci, komentar: novKom, status: novStat });
+                } else {
+                    let id = document.getElementById('modalId').value;
+                    let novStat = document.getElementById('modalStatus').value;
+                    let novKom = unetiKomentar + ` (Ažurirao: ${trenutniKorisnik} - ${vrijemeSada})`;
 
-                let item = sviSlucajevi.find(x => String(x.br) === String(id));
-                if (item) {
-                    item.status = novStat;
-                    item.komentar = novKom;
+                    let item = sviSlucajevi.find(x => String(x.br) === String(id));
+                    if (item) {
+                        item.status = novStat;
+                        item.komentar = novKom;
+                    }
                 }
+                renderMainTable(sviSlucajevi);
+            } else if (aktivnaTabela === "kosturnica") {
+                let id = document.getElementById('modalId').value;
+                let item = podaciKosturnica.find(x => String(x.br) === String(id));
+                if (item) {
+                    item.komentar = unetiKomentar;
+                    item.preporuka = unetaPreporuka;
+                }
+                renderStaticTables();
+            } else if (aktivnaTabela === "bezPodudaranja") {
+                let id = document.getElementById('modalId').value;
+                let item = podaciBezPodudaranja.find(x => String(x.br) === String(id));
+                if (item) {
+                    item.oznaka = unetiKomentar;
+                    item.preporuka = unetaPreporuka;
+                }
+                renderStaticTables();
+            } else if (aktivnaTabela === "ponovno") {
+                let id = document.getElementById('modalId').value;
+                let item = podaciPonovnoUzorkovanje.find(x => String(x.br) === String(id));
+                if (item) {
+                    item.oznaka = unetiKomentar;
+                }
+                renderStaticTables();
             }
 
-            renderTable(sviSlucajevi);
             setTimeout(() => { closeModal(); }, 300);
         }
     </script>

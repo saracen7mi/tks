@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="bs">
 <head>
@@ -88,6 +89,8 @@
         .btn-add { background: var(--success); color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
         .btn-print { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
         .btn-print:hover { background: var(--success); color: white; }
+        .btn-log { background: rgba(59, 130, 246, 0.15); color: var(--accent); border: 1px solid rgba(59, 130, 246, 0.3); padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
+        .btn-log:hover { background: var(--accent); color: white; }
 
         .search-bar { width: 100%; padding: 10px 14px; background: #0b0f19; border: 1px solid var(--border); color: white; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box; margin-bottom: 15px; }
 
@@ -108,6 +111,10 @@
         .modal-content { background: var(--card-bg); border: 1px solid var(--border); padding: 25px; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
         .modal-content select, .modal-content input, .modal-content textarea { width: 100%; background: #0b0f19; border: 1px solid var(--border); color: white; border-radius: 8px; padding: 10px; box-sizing: border-box; margin-top: 5px; margin-bottom: 12px; font-size: 0.9rem; }
         .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
+
+        .log-list { max-height: 260px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 10px; background: #0b0f19; font-size: 0.85rem; }
+        .log-item { padding: 8px; border-bottom: 1px solid var(--border); color: var(--text-main); }
+        .log-item:last-child { border-bottom: none; }
 
         footer { text-align: center; padding: 20px; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
 
@@ -267,6 +274,7 @@
                 <div class="header-actions">
                     <h2 style="margin:0; font-size:1.1rem;">📋 Pregled predmeta i izvještaja (Aktivni slučajevi)</h2>
                     <div class="action-buttons">
+                        <button class="btn-log" onclick="openPrintLogModal()">📜 Pregled štampe</button>
                         <button class="btn-print" onclick="handlePrint()">🖨️ Ispiši u PDF</button>
                         <button class="btn-add" onclick="openAddModal()">➕ Dodaj novi slučaj</button>
                     </div>
@@ -427,12 +435,27 @@
         </div>
     </div>
 
+    <!-- MODAL ZA PREGLED KO JE ŠTAMPAO -->
+    <div id="printLogModal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-top:0; color:var(--text-main);">📜 Evidencija ko je štampao dokument</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0;">
+                Zabilježeni ispisi u ovom pregledniku (pozivi su poslani i prema Apps Script endpointu):
+            </p>
+            <div id="printLogList" class="log-list"></div>
+            <div class="modal-actions">
+                <button type="button" class="btn-edit" style="background:var(--accent); color:white;" onclick="closePrintLogModal()">Zatvori</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwiiuHljMlHxxHJlZRs5Fl073HuvdRC7rjpzNCb32jTWWODi9Xtermz01BUVSlJfmU2Ng/exec";
         let isSubmitting = false;
         let trenutniKorisnik = "";
         let sviSlucajevi = [];
         let aktivnaTabela = "main";
+        let evidencijaStampe = JSON.parse(localStorage.getItem("ino_print_log") || "[]");
 
         const DEFAULT_PREPORUKA = "trajni ukop nakon očitovanja Tužilaštva";
 
@@ -674,7 +697,7 @@
             btn.innerText = "Prijava...";
             btn.disabled = true;
 
-            fetch(`${SCRIPT_URL}?action=login&fullname=${encodeURIComponent(fullname)}&password=${encodeURIComponent(pass)}`).catch(() => {});
+            fetch(`${SCRIPT_URL}?action=login&fullname=${encodeURIComponent(fullname)}&password=${encodeURIComponent(pass)}`, { mode: 'no-cors' }).catch(() => {});
 
             setTimeout(() => {
                 trenutniKorisnik = fullname;
@@ -712,11 +735,6 @@
                 let row = tbody.insertRow();
                 let isIdent = String(item.status).toLowerCase().includes('identifikovan');
                 let tagClass = isIdent ? 'tag-ident' : 'tag-reasc';
-                
-                // Objedinjeni prikaz za Analizu INL BiH prilikom štampe (Uzorci DNK + Komentar)
-                let dnkDio = (item.uzorci && item.uzorci.trim() !== '' && item.uzorci.trim() !== '-') 
-                    ? `<strong>DNK:</strong> ${item.uzorci}; ` 
-                    : '';
                 let komentarDio = item.komentar || '-';
 
                 row.innerHTML = `
@@ -725,7 +743,7 @@
                     <td class="screen-only"><code>${item.uzorci || '-'}</code></td>
                     <td class="col-print-analiza">
                         <span class="screen-only" style="color:#d1d5db; font-style:italic;">${komentarDio}</span>
-                        <span class="print-only">${dnkDio}${komentarDio}</span>
+                        <span class="print-only">${komentarDio}</span>
                     </td>
                     <td class="col-print-preporuka" style="text-align: center;">
                         <span class="tag ${tagClass}">${item.status}</span>
@@ -737,24 +755,61 @@
             });
         }
 
-        // FUNKCIJA ZA ŠTAMPU I BILJEŽENJE U GOOGLE SHEETS (BEZ DODAVANJA REDOVA U PRIKAZ TABELE)
+        // FUNKCIJA ZA ŠTAMPU BEZ DIRANJA APPS SCRIPT-A
         function handlePrint() {
             let vrijemeSada = new Date().toLocaleString("bs-BA");
             let korisnik = trenutniKorisnik || "Nepoznat korisnik";
-            let oznakaPrinta = `🖨️ ISPRINTAO: ${korisnik} (${vrijemeSada})`;
 
             // 1. Popunjava potpis i vrijeme na dnu dokumenta koji se štampa
             document.getElementById('printAutorIme').innerText = korisnik;
             document.getElementById('printVrijemeIspisa').innerText = vrijemeSada;
 
-            // 2. Šalje oznaku u Google Sheets da je ulogovano lice isprintalo dokument
-            fetch(`${SCRIPT_URL}?action=printReport&autor=${encodeURIComponent(korisnik)}&vrijeme=${encodeURIComponent(vrijemeSada)}&status=${encodeURIComponent('ISPRINTAN DOKUMENT')}&komentar=${encodeURIComponent(oznakaPrinta)}`)
-                .catch(() => {});
+            // 2. Čuva lokalni zapis u pregledniku (za dugme "📜 Pregled štampe")
+            evidencijaStampe.unshift({ korisnik: korisnik, vrijeme: vrijemeSada });
+            localStorage.setItem("ino_print_log", JSON.stringify(evidencijaStampe));
 
-            // 3. Pokreće prozor za štampu / PDF
+            // 3. Šalje poziv na postojeći SCRIPT_URL (bez mijenjanja Apps Script koda)
+            let params = new URLSearchParams({
+                action: "updateRecord",
+                id: "PRINT_LOG",
+                br: "PRINT_LOG",
+                autor: korisnik,
+                fullname: korisnik,
+                vrijeme: vrijemeSada,
+                status: "ISPRINTAO DOKUMENT",
+                oznaka: "Štampa izvještaja — Kosturnica Visoko",
+                uzorci: "-",
+                komentar: `Dokument isprintao: ${korisnik} (${vrijemeSada})`
+            });
+
+            let iframe = document.getElementById('hidden_iframe');
+            if (iframe) {
+                iframe.src = `${SCRIPT_URL}?${params.toString()}`;
+            }
+            fetch(`${SCRIPT_URL}?${params.toString()}`, { mode: 'no-cors' }).catch(() => {});
+
+            // 4. Pokreće prozor za štampu / PDF
             setTimeout(() => {
                 window.print();
             }, 150);
+        }
+
+        function openPrintLogModal() {
+            let listEl = document.getElementById('printLogList');
+            if (!evidencijaStampe.length) {
+                listEl.innerHTML = `<div class="log-item" style="color:var(--text-muted);">Još nema zabilježenih ispisa u ovom pregledniku.</div>`;
+            } else {
+                listEl.innerHTML = evidencijaStampe.map((entry, idx) => `
+                    <div class="log-item">
+                        <strong>#${evidencijaStampe.length - idx}</strong> — <strong>${entry.korisnik}</strong> je isprintao dokument u <span>${entry.vrijeme}</span>
+                    </div>
+                `).join('');
+            }
+            document.getElementById('printLogModal').style.display = 'flex';
+        }
+
+        function closePrintLogModal() {
+            document.getElementById('printLogModal').style.display = 'none';
         }
 
         function renderStaticTables() {

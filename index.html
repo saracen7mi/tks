@@ -125,7 +125,8 @@
                 color: #000000 !important; 
                 font-family: "Times New Roman", Times, serif !important;
             }
-            header, .header-actions, .btn-edit, .user-bar, footer, .modal, .search-bar, .no-print, .screen-only { 
+            header, .header-actions, .btn-edit, .user-bar, footer, .modal, .search-bar, .no-print, .screen-only,
+            #tblVisoko th.screen-only, #tblVisoko td.screen-only { 
                 display: none !important; 
             }
             .print-only {
@@ -161,19 +162,20 @@
                 overflow: visible !important; 
                 border: none !important; 
             }
-            table { 
+            table#tblVisoko { 
                 width: 100% !important; 
                 font-size: 10.5pt !important; 
                 color: #000000 !important; 
                 border-collapse: collapse !important; 
+                table-layout: fixed;
             }
-            thead {
+            #tblVisoko thead {
                 display: table-header-group;
             }
-            tr {
+            #tblVisoko tr {
                 page-break-inside: avoid;
             }
-            th, td { 
+            #tblVisoko th, #tblVisoko td { 
                 border: 1px solid #000000 !important; 
                 padding: 6px 8px !important; 
                 color: #000000 !important; 
@@ -181,8 +183,10 @@
                 vertical-align: top !important;
                 text-align: left !important;
                 font-style: normal !important;
+                position: static !important;
+                word-wrap: break-word;
             }
-            th { 
+            #tblVisoko th { 
                 background-color: #f2f2f2 !important; 
                 font-weight: bold !important; 
                 text-transform: none !important;
@@ -190,14 +194,12 @@
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
-            /* Širine kolona kao na šefovoj slici */
-            .col-print-br { width: 4% !important; }
-            .col-print-oznaka { width: 20% !important; }
-            .col-print-analiza { width: 52% !important; }
-            .col-print-preporuka { width: 24% !important; }
+            #tblVisoko th.col-print-br, #tblVisoko td.col-print-br { width: 5% !important; }
+            #tblVisoko th.col-print-oznaka, #tblVisoko td.col-print-oznaka { width: 20% !important; }
+            #tblVisoko th.col-print-analiza, #tblVisoko td.col-print-analiza { width: 51% !important; }
+            #tblVisoko th.col-print-preporuka, #tblVisoko td.col-print-preporuka { width: 24% !important; text-align: left !important; }
 
-            /* Uklanjanje bedža oko statusa prilikom štampe */
-            .tag {
+            #tblVisoko .tag {
                 background: transparent !important;
                 border: none !important;
                 color: #000000 !important;
@@ -207,7 +209,6 @@
                 border-radius: 0 !important;
             }
 
-            /* Potpis ulogovanog korisnika i vrijeme na dnu ispisa */
             .print-footer-meta {
                 margin-top: 18px;
                 padding-top: 8px;
@@ -736,7 +737,7 @@
             });
         }
 
-        // FUNKCIJA ZA ŠTAMPU, DODAVANJE OZNAKE U TABELU I EVIDENCIJU U GOOGLE SHEETS
+        // FUNKCIJA ZA ŠTAMPU I BILJEŽENJE U GOOGLE SHEETS (BEZ DODAVANJA REDOVA U PRIKAZ TABELE)
         function handlePrint() {
             let vrijemeSada = new Date().toLocaleString("bs-BA");
             let korisnik = trenutniKorisnik || "Nepoznat korisnik";
@@ -746,21 +747,11 @@
             document.getElementById('printAutorIme').innerText = korisnik;
             document.getElementById('printVrijemeIspisa').innerText = vrijemeSada;
 
-            // 2. Dodaje oznaku u samu tabelu na ekranu
-            sviSlucajevi.push({
-                br: "PRINT",
-                oznaka: "Evidencija ispisa dokumenta",
-                uzorci: "-",
-                komentar: oznakaPrinta,
-                status: "ISPRINTAN DOKUMENT"
-            });
-            renderMainTable(sviSlucajevi);
-
-            // 3. Šalje oznaku u Google Sheets da je ulogovano lice isprintalo dokument
+            // 2. Šalje oznaku u Google Sheets da je ulogovano lice isprintalo dokument
             fetch(`${SCRIPT_URL}?action=printReport&autor=${encodeURIComponent(korisnik)}&vrijeme=${encodeURIComponent(vrijemeSada)}&status=${encodeURIComponent('ISPRINTAN DOKUMENT')}&komentar=${encodeURIComponent(oznakaPrinta)}`)
                 .catch(() => {});
 
-            // 4. Pokreće prozor za štampu / PDF
+            // 3. Pokreće prozor za štampu / PDF
             setTimeout(() => {
                 window.print();
             }, 150);

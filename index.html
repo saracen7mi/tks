@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="bs">
 <head>
@@ -682,6 +681,15 @@
             {br: "12", oznaka: "PREUZETO-MRTVAČNICA KOŠEVO NN-5 (G.G. VISOKO)", setovi: "1"}
         ];
 
+        // Briše samo riječ/oznaku "DNK", a ostavlja KTA-..., KRI-..., NN-... i sav ostali tekst
+        function ocistiSamoDnkPriPrintu(tekst) {
+            if (!tekst) return '-';
+            return String(tekst)
+                .replace(/\bDNK\b\s*[:\-–—]?\s*/gi, '')
+                .replace(/\s{2,}/g, ' ')
+                .trim() || '-';
+        }
+
         function handleLogin(e) {
             e.preventDefault();
             let fullname = document.getElementById('loginFullname').value.trim();
@@ -736,6 +744,7 @@
                 let isIdent = String(item.status).toLowerCase().includes('identifikovan');
                 let tagClass = isIdent ? 'tag-ident' : 'tag-reasc';
                 let komentarDio = item.komentar || '-';
+                let printAnaliza = ocistiSamoDnkPriPrintu(komentarDio);
 
                 row.innerHTML = `
                     <td class="col-print-br"><strong>${item.br}</strong></td>
@@ -743,7 +752,7 @@
                     <td class="screen-only"><code>${item.uzorci || '-'}</code></td>
                     <td class="col-print-analiza">
                         <span class="screen-only" style="color:#d1d5db; font-style:italic;">${komentarDio}</span>
-                        <span class="print-only">${komentarDio}</span>
+                        <span class="print-only">${printAnaliza}</span>
                     </td>
                     <td class="col-print-preporuka" style="text-align: center;">
                         <span class="tag ${tagClass}">${item.status}</span>

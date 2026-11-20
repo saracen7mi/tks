@@ -681,13 +681,30 @@
             {br: "12", oznaka: "PREUZETO-MRTVAČNICA KOŠEVO NN-5 (G.G. VISOKO)", setovi: "1"}
         ];
 
-        // Briše samo riječ/oznaku "DNK", a ostavlja KTA-..., KRI-..., NN-... i sav ostali tekst
-        function ocistiSamoDnkPriPrintu(tekst) {
-            if (!tekst) return '-';
+        // Briše samo riječ/oznaku "DNK", a ostavlja sve oznake (KPP-..., KTA-..., KRI-..., NN-...) i komentar
+        function ocistiSamoDnk(tekst) {
+            if (!tekst) return '';
             return String(tekst)
                 .replace(/\bDNK\b\s*[:\-–—]?\s*/gi, '')
                 .replace(/\s{2,}/g, ' ')
-                .trim() || '-';
+                .trim();
+        }
+
+        function spojiAnalizuZaPrint(uzorci, komentar) {
+            let cistiUzorci = ocistiSamoDnk(uzorci);
+            if (cistiUzorci === '-' || cistiUzorci === '/') cistiUzorci = '';
+
+            let cistiKomentar = ocistiSamoDnk(komentar);
+            if (cistiKomentar === '-') cistiKomentar = '';
+
+            if (cistiUzorci && cistiKomentar) {
+                // Izbjegava dupliranje ako komentar već sadrži iste oznake
+                if (cistiKomentar.includes(cistiUzorci)) {
+                    return cistiKomentar;
+                }
+                return `${cistiUzorci}; ${cistiKomentar}`;
+            }
+            return cistiUzorci || cistiKomentar || '-';
         }
 
         function handleLogin(e) {
@@ -744,7 +761,7 @@
                 let isIdent = String(item.status).toLowerCase().includes('identifikovan');
                 let tagClass = isIdent ? 'tag-ident' : 'tag-reasc';
                 let komentarDio = item.komentar || '-';
-                let printAnaliza = ocistiSamoDnkPriPrintu(komentarDio);
+                let printAnaliza = spojiAnalizuZaPrint(item.uzorci, item.komentar);
 
                 row.innerHTML = `
                     <td class="col-print-br"><strong>${item.br}</strong></td>

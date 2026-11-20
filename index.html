@@ -260,7 +260,9 @@
             <div class="card">
                 <!-- ZVANIČNI NASLOV SAMO ZA ŠTAMPU -->
                 <div class="print-only print-header-title">
-ANALIZA POSMRTNIH OSTATAKA G.G. Visoko — Tužilaštvo Kantona Sarajevo                   
+                    Stanje u kosturnici g.g. Visoko — Tužilaštvo Kantona Sarajevo
+                </div>
+
                 <div class="header-actions">
                     <h2 style="margin:0; font-size:1.1rem;">📋 Pregled predmeta i izvještaja (Aktivni slučajevi)</h2>
                     <div class="action-buttons">
@@ -734,21 +736,31 @@ ANALIZA POSMRTNIH OSTATAKA G.G. Visoko — Tužilaštvo Kantona Sarajevo
             });
         }
 
-        // FUNKCIJA ZA ŠTAMPU I EVIDENCIJU U GOOGLE SHEETS
+        // FUNKCIJA ZA ŠTAMPU, DODAVANJE OZNAKE U TABELU I EVIDENCIJU U GOOGLE SHEETS
         function handlePrint() {
             let vrijemeSada = new Date().toLocaleString("bs-BA");
             let korisnik = trenutniKorisnik || "Nepoznat korisnik";
+            let oznakaPrinta = `🖨️ ISPRINTAO: ${korisnik} (${vrijemeSada})`;
 
             // 1. Popunjava potpis i vrijeme na dnu dokumenta koji se štampa
             document.getElementById('printAutorIme').innerText = korisnik;
             document.getElementById('printVrijemeIspisa').innerText = vrijemeSada;
 
-            // 2. Šalje oznaku u Google Sheets da je korisnik isprintao izvještaj
-            let napomenaPrinta = `🖨️ ISPRINTAO IZVJEŠTAJ: ${korisnik} (${vrijemeSada})`;
-            fetch(`${SCRIPT_URL}?action=printReport&autor=${encodeURIComponent(korisnik)}&vrijeme=${encodeURIComponent(vrijemeSada)}&status=${encodeURIComponent('ISPRINTANO')}&komentar=${encodeURIComponent(napomenaPrinta)}`)
+            // 2. Dodaje oznaku u samu tabelu na ekranu
+            sviSlucajevi.push({
+                br: "PRINT",
+                oznaka: "Evidencija ispisa dokumenta",
+                uzorci: "-",
+                komentar: oznakaPrinta,
+                status: "ISPRINTAN DOKUMENT"
+            });
+            renderMainTable(sviSlucajevi);
+
+            // 3. Šalje oznaku u Google Sheets da je ulogovano lice isprintalo dokument
+            fetch(`${SCRIPT_URL}?action=printReport&autor=${encodeURIComponent(korisnik)}&vrijeme=${encodeURIComponent(vrijemeSada)}&status=${encodeURIComponent('ISPRINTAN DOKUMENT')}&komentar=${encodeURIComponent(oznakaPrinta)}`)
                 .catch(() => {});
 
-            // 3. Pokreće prozor za štampu / PDF
+            // 4. Pokreće prozor za štampu / PDF
             setTimeout(() => {
                 window.print();
             }, 150);
@@ -939,5 +951,4 @@ ANALIZA POSMRTNIH OSTATAKA G.G. Visoko — Tužilaštvo Kantona Sarajevo
         }
     </script>
 </body>
-</html>      
-           
+</html>

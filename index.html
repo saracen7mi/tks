@@ -132,7 +132,7 @@
                 font-family: "Times New Roman", Times, serif !important;
             }
             header, .header-actions, .btn-edit, .user-bar, footer, .modal, .search-bar, .no-print, .screen-only,
-            #tblVisoko th.screen-only, #tblVisoko td.screen-only { 
+            table th.screen-only, table td.screen-only { 
                 display: none !important; 
             }
             .print-only {
@@ -151,7 +151,20 @@
                 box-shadow: none !important; 
                 background: #ffffff !important; 
                 padding: 0 !important; 
-                margin: 0 !important; 
+                margin: 18px 0 0 0 !important; 
+            }
+            .card:first-child {
+                margin-top: 0 !important;
+            }
+            .section-title {
+                color: #000000 !important;
+                border-bottom: 1px solid #000000 !important;
+                font-size: 11.5pt !important;
+                page-break-after: avoid;
+            }
+            .section-desc {
+                color: #000000 !important;
+                font-size: 9.5pt !important;
             }
             .print-header-title {
                 text-align: center;
@@ -168,20 +181,23 @@
                 overflow: visible !important; 
                 border: none !important; 
             }
-            table#tblVisoko { 
+            table { 
                 width: 100% !important; 
-                font-size: 10.5pt !important; 
+                font-size: 9.5pt !important; 
                 color: #000000 !important; 
                 border-collapse: collapse !important; 
+            }
+            table#tblVisoko { 
+                font-size: 10.5pt !important; 
                 table-layout: fixed;
             }
-            #tblVisoko thead {
+            thead {
                 display: table-header-group;
             }
-            #tblVisoko tr {
+            tr {
                 page-break-inside: avoid;
             }
-            #tblVisoko th, #tblVisoko td { 
+            th, td { 
                 border: 1px solid #000000 !important; 
                 padding: 6px 8px !important; 
                 color: #000000 !important; 
@@ -192,14 +208,15 @@
                 position: static !important;
                 word-wrap: break-word;
             }
-            #tblVisoko th { 
+            th { 
                 background-color: #f2f2f2 !important; 
                 font-weight: bold !important; 
                 text-transform: none !important;
-                font-size: 10.5pt !important;
+                font-size: 9.5pt !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
+            #tblVisoko th { font-size: 10.5pt !important; }
             #tblVisoko th.col-print-br, #tblVisoko td.col-print-br { width: 5% !important; }
             #tblVisoko th.col-print-oznaka, #tblVisoko td.col-print-oznaka { width: 20% !important; }
             #tblVisoko th.col-print-analiza, #tblVisoko td.col-print-analiza { width: 51% !important; }
@@ -223,6 +240,7 @@
                 justify-content: space-between;
                 font-size: 9.5pt;
                 color: #000000 !important;
+                page-break-inside: avoid;
             }
         }
     </style>
@@ -305,16 +323,10 @@
                         <tbody></tbody>
                     </table>
                 </div>
-
-                <!-- PODNOŽJE SA IMENOM ULOGOVANOG KORISNIKA I VREMENOM ISPISA (SAMO ZA ŠTAMPU) -->
-                <div class="print-only print-footer-meta">
-                    <span>Dokument isprintao: <strong id="printAutorIme">-</strong></span>
-                    <span>Datum i vrijeme ispisa: <strong id="printVrijemeIspisa">-</strong></span>
-                </div>
             </div>
 
             <!-- TABELA 8: Slučajevi definirani kao materijal za kosturnicu (Strane 40-41) -->
-            <div class="card no-print">
+            <div class="card">
                 <h3 class="section-title">Slučajevi definirani kao materijal za kosturnicu </h3>
                 <p class="section-desc">
                     Akumulirani fragmentarni skeletni materijal označen kao "materijal za kosturnicu" zbog nemogućnosti povezivanja ili izolovanja DNK.
@@ -328,7 +340,7 @@
                                 <th>Oznaka slučaja</th>
                                 <th>Komentar</th>
                                 <th style="width: 250px;">Preporuka INO</th>
-                                <th style="width: 80px; text-align: center;">Akcija</th>
+                                <th class="screen-only" style="width: 80px; text-align: center;">Akcija</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -337,7 +349,7 @@
             </div>
 
             <!-- TABELA 9: Slučajevi koji sadrže skeletne elemente sa profilima DNK bez podudarnosti -->
-            <div class="card no-print">
+            <div class="card">
                 <h3 class="section-title">Slučajevi sa profilima DNK bez podudarnosti </h3>
                 <p class="section-desc">
                     Slučajevi sa generiranim profilima DNK bez podudarnosti.
@@ -351,7 +363,7 @@
                                 <th>Oznaka slučaja</th>
                                 <th style="width: 120px; text-align: center;">Br. setova</th>
                                 <th style="width: 250px;">Preporuka INO</th>
-                                <th style="width: 80px; text-align: center;">Akcija</th>
+                                <th class="screen-only" style="width: 80px; text-align: center;">Akcija</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -360,7 +372,7 @@
             </div>
 
             <!-- TABELA 10: Spisak slučajeva koji zahtijevaju ponovno dostavljanje uzoraka za analizu DNK -->
-            <div class="card no-print">
+            <div class="card">
                 <h3 class="section-title">Slučajevi koji zahtijevaju ponovno dostavljanje uzoraka za analizu DNK</h3>
                 <p class="section-desc">
                     Slučajevi iz kojih ranije nije uspješno izolovan profil DNK.
@@ -373,11 +385,17 @@
                                 <th style="width: 50px;">Br.</th>
                                 <th>Oznaka slučaja</th>
                                 <th style="width: 140px; text-align: center;">Br. skeletnih setova</th>
-                                <th style="width: 80px; text-align: center;">Akcija</th>
+                                <th class="screen-only" style="width: 80px; text-align: center;">Akcija</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
+                </div>
+
+                <!-- PODNOŽJE SA IMENOM ULOGOVANOG KORISNIKA I VREMENOM ISPISA (SAMO ZA ŠTAMPU) -->
+                <div class="print-only print-footer-meta">
+                    <span>Dokument isprintao: <strong id="printAutorIme">-</strong></span>
+                    <span>Datum i vrijeme ispisa: <strong id="printVrijemeIspisa">-</strong></span>
                 </div>
             </div>
 
@@ -849,7 +867,7 @@
                     <td>${item.oznaka}</td>
                     <td style="color:#d1d5db; font-style:italic;">${item.komentar}</td>
                     <td style="color:#93c5fd; font-weight:500;">${item.preporuka || DEFAULT_PREPORUKA}</td>
-                    <td style="text-align: center;"><button class="btn-edit" onclick="openEditModal('kosturnica', '${item.br}')">✏️ Uredi</button></td>
+                    <td class="screen-only" style="text-align: center;"><button class="btn-edit" onclick="openEditModal('kosturnica', '${item.br}')">✏️ Uredi</button></td>
                 `;
             });
 
@@ -863,7 +881,7 @@
                     <td>${item.oznaka}</td>
                     <td style="text-align:center;"><code>${item.setovi}</code></td>
                     <td style="color:#93c5fd; font-weight:500;">${item.preporuka || DEFAULT_PREPORUKA}</td>
-                    <td style="text-align: center;"><button class="btn-edit" onclick="openEditModal('bezPodudaranja', '${item.br}')">✏️ Uredi</button></td>
+                    <td class="screen-only" style="text-align: center;"><button class="btn-edit" onclick="openEditModal('bezPodudaranja', '${item.br}')">✏️ Uredi</button></td>
                 `;
             });
 
@@ -876,7 +894,7 @@
                     <td><strong>${item.br}</strong></td>
                     <td>${item.oznaka}</td>
                     <td style="text-align:center;"><code>${item.setovi}</code></td>
-                    <td style="text-align: center;"><button class="btn-edit" onclick="openEditModal('ponovno', '${item.br}')">✏️ Uredi</button></td>
+                    <td class="screen-only" style="text-align: center;"><button class="btn-edit" onclick="openEditModal('ponovno', '${item.br}')">✏️ Uredi</button></td>
                 `;
             });
         }

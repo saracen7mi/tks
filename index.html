@@ -84,7 +84,7 @@
 
         .header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
         .action-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
-        
+
         .btn-add { background: var(--success); color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
         .btn-print { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
         .btn-print:hover { background: var(--success); color: white; }
@@ -126,14 +126,14 @@
                 size: A4 landscape;
                 margin: 14mm 12mm;
             }
-            body { 
-                background-color: #ffffff !important; 
-                color: #000000 !important; 
+            body {
+                background-color: #ffffff !important;
+                color: #000000 !important;
                 font-family: "Times New Roman", Times, serif !important;
             }
             header, .header-actions, .btn-edit, .user-bar, footer, .modal, .search-bar, .no-print, .screen-only,
-            table th.screen-only, table td.screen-only { 
-                display: none !important; 
+            table th.screen-only, table td.screen-only {
+                display: none !important;
             }
             .print-only {
                 display: block !important;
@@ -141,17 +141,17 @@
             span.print-only {
                 display: inline !important;
             }
-            .container { 
-                max-width: 100% !important; 
-                margin: 0 !important; 
-                padding: 0 !important; 
+            .container {
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
             }
-            .card { 
-                border: none !important; 
-                box-shadow: none !important; 
-                background: #ffffff !important; 
-                padding: 0 !important; 
-                margin: 18px 0 0 0 !important; 
+            .card {
+                border: none !important;
+                box-shadow: none !important;
+                background: #ffffff !important;
+                padding: 0 !important;
+                margin: 18px 0 0 0 !important;
             }
             .card:first-child {
                 margin-top: 0 !important;
@@ -176,19 +176,19 @@
                 max-width: 88%;
                 color: #000000 !important;
             }
-            .table-responsive { 
-                max-height: none !important; 
-                overflow: visible !important; 
-                border: none !important; 
+            .table-responsive {
+                max-height: none !important;
+                overflow: visible !important;
+                border: none !important;
             }
-            table { 
-                width: 100% !important; 
-                font-size: 9.5pt !important; 
-                color: #000000 !important; 
-                border-collapse: collapse !important; 
+            table {
+                width: 100% !important;
+                font-size: 9.5pt !important;
+                color: #000000 !important;
+                border-collapse: collapse !important;
             }
-            table#tblVisoko { 
-                font-size: 10.5pt !important; 
+            table#tblVisoko {
+                font-size: 10.5pt !important;
                 table-layout: fixed;
             }
             thead {
@@ -197,10 +197,10 @@
             tr {
                 page-break-inside: avoid;
             }
-            th, td { 
-                border: 1px solid #000000 !important; 
-                padding: 6px 8px !important; 
-                color: #000000 !important; 
+            th, td {
+                border: 1px solid #000000 !important;
+                padding: 6px 8px !important;
+                color: #000000 !important;
                 background: #ffffff !important;
                 vertical-align: top !important;
                 text-align: left !important;
@@ -208,9 +208,9 @@
                 position: static !important;
                 word-wrap: break-word;
             }
-            th { 
-                background-color: #f2f2f2 !important; 
-                font-weight: bold !important; 
+            th {
+                background-color: #f2f2f2 !important;
+                font-weight: bold !important;
                 text-transform: none !important;
                 font-size: 9.5pt !important;
                 -webkit-print-color-adjust: exact;
@@ -327,7 +327,7 @@
 
             <!-- TABELA 8: Slučajevi definirani kao materijal za kosturnicu (Strane 40-41) -->
             <div class="card">
-                <h3 class="section-title">Slučajevi definirani kao materijal za kosturnicu </h3>
+                <h3 class="section-title">Slučajevi definirani kao materijal za kosturnicu</h3>
                 <p class="section-desc">
                     Akumulirani fragmentarni skeletni materijal označen kao "materijal za kosturnicu" zbog nemogućnosti povezivanja ili izolovanja DNK.
                 </p>
@@ -350,7 +350,7 @@
 
             <!-- TABELA 9: Slučajevi koji sadrže skeletne elemente sa profilima DNK bez podudarnosti -->
             <div class="card">
-                <h3 class="section-title">Slučajevi sa profilima DNK bez podudarnosti </h3>
+                <h3 class="section-title">Slučajevi sa profilima DNK bez podudarnosti</h3>
                 <p class="section-desc">
                     Slučajevi sa generiranim profilima DNK bez podudarnosti.
                 </p>
@@ -418,7 +418,7 @@
                 <div id="addFields" style="display:none;">
                     <label style="font-size:0.8rem; color:var(--text-muted);">Redni broj (Br.):</label>
                     <input type="text" name="br" id="modalBr" placeholder="npr. 7">
-                    
+
                     <label style="font-size:0.8rem; color:var(--text-muted);">Oznaka slučaja:</label>
                     <input type="text" name="oznaka" id="modalOznaka" placeholder="Opis lokacije i lica...">
 
@@ -438,7 +438,7 @@
 
                 <label style="font-size:0.8rem; color:var(--text-muted);" id="labelKomentar">Komentar / Detalji:</label>
                 <textarea name="komentar" id="modalKomentar" rows="4" placeholder="Unesi ili dopuni komentar..."></textarea>
-                
+
                 <div id="preporukaGroup" style="display:none;">
                     <label style="font-size:0.8rem; color:var(--text-muted);">Preporuka INO:</label>
                     <textarea name="preporukaIno" id="modalPreporukaIno" rows="2" placeholder="Unesi preporuku..."></textarea>
@@ -699,7 +699,6 @@
             {br: "12", oznaka: "PREUZETO-MRTVAČNICA KOŠEVO NN-5 (G.G. VISOKO)", setovi: "1"}
         ];
 
-        // Briše samo riječ/oznaku "DNK", a ostavlja sve oznake (KPP-..., KTA-..., KRI-..., NN-...) i komentar
         function ocistiSamoDnk(tekst) {
             if (!tekst) return '';
             return String(tekst)
@@ -716,7 +715,6 @@
             if (cistiKomentar === '-') cistiKomentar = '';
 
             if (cistiUzorci && cistiKomentar) {
-                // Izbjegava dupliranje ako komentar već sadrži iste oznake
                 if (cistiKomentar.includes(cistiUzorci)) {
                     return cistiKomentar;
                 }
@@ -725,35 +723,39 @@
             return cistiUzorci || cistiKomentar || '-';
         }
 
-        // function handleLogin(e) {
-        //     e.preventDefault();
-        //     let fullname = document.getElementById('loginFullname').value.trim();
-        //     let pass = document.getElementById('loginPass').value.trim();
-        //     let btn = document.getElementById('btnLogin');
-        //     let err = document.getElementById('loginError');
+        function handleLogin(e) {
+            e.preventDefault();
+            let fullname = document.getElementById('loginFullname').value.trim();
+            let pass = document.getElementById('loginPass').value.trim();
+            let btn = document.getElementById('btnLogin');
+            let err = document.getElementById('loginError');
 
-        //     if (pass !== "INO2026!" || fullname.length < 2) {
-        //         err.style.display = "block";
-        //         return;
-        //     }
+            if (pass !== "INO2026!" || fullname.length < 2) {
+                err.style.display = "block";
+                return;
+            }
 
-        //     btn.innerText = "Prijava...";
-        //     btn.disabled = true;
+            err.style.display = "none";
+            btn.innerText = "Prijava...";
+            btn.disabled = true;
 
-        //     fetch(`SCRIPTURL?action=login&fullname={encodeURIComponent(fullname)}&password=${encodeURIComponent(pass)}`, { mode: 'no-cors' }).catch(() => {});
+            fetch(`${SCRIPT_URL}?action=login&fullname=${encodeURIComponent(fullname)}&password=${encodeURIComponent(pass)}`, { mode: 'no-cors' }).catch(() => {});
 
-        //     setTimeout(() => {
-        //         trenutniKorisnik = fullname;
-        //         document.getElementById('prijavljeniKorisnik').innerText = fullname;
-        //         document.getElementById('loginScreen').style.display = "none";
-        //         document.getElementById('mainApp').style.display = "block";
-        //         loadData();
-        //         renderStaticTables();
-        //     }, 400);
-        // }
+            setTimeout(() => {
+                trenutniKorisnik = fullname;
+                document.getElementById('prijavljeniKorisnik').innerText = fullname;
+                document.getElementById('loginScreen').style.display = "none";
+                document.getElementById('mainApp').style.display = "block";
+                btn.innerText = "Prijavi se 🔒";
+                btn.disabled = false;
+                loadData();
+                renderStaticTables();
+            }, 400);
+        }
 
         function logout() {
             trenutniKorisnik = "";
+            document.getElementById('loginPass').value = "";
             document.getElementById('mainApp').style.display = "none";
             document.getElementById('loginScreen').style.display = "flex";
         }
@@ -776,7 +778,7 @@
 
             dataList.forEach(item => {
                 let row = tbody.insertRow();
-                let isIdent = String(item.status).toLowerCase().includes('identifikovan');
+                let isIdent = String(item.status || '').toLowerCase().includes('identifikovan');
                 let tagClass = isIdent ? 'tag-ident' : 'tag-reasc';
                 let komentarDio = item.komentar || '-';
                 let printAnaliza = spojiAnalizuZaPrint(item.uzorci, item.komentar);
@@ -790,7 +792,7 @@
                         <span class="print-only">${printAnaliza}</span>
                     </td>
                     <td class="col-print-preporuka" style="text-align: center;">
-                        <span class="tag tagClass">{item.status}</span>
+                        <span class="tag ${tagClass}">${item.status}</span>
                     </td>
                     <td class="screen-only" style="text-align: center;">
                         <button class="btn-edit" onclick="openEditModal('main', '${item.br}')">✏️ Uredi</button>
@@ -799,110 +801,40 @@
             });
         }
 
-        // FUNKCIJA ZA ŠTAMPU BEZ DIRANJA APPS SCRIPT-A
-        // function handlePrint() {
-        //     let vrijemeSada = new Date().toLocaleString("bs-BA");
-        //     let korisnik = trenutniKorisnik || "Nepoznat korisnik";
+        function handlePrint() {
+            let vrijemeSada = new Date().toLocaleString("bs-BA");
+            let korisnik = trenutniKorisnik || "Nepoznat korisnik";
 
-        //     // 1. Popunjava potpis i vrijeme na dnu dokumenta koji se štampa
-        //     document.getElementById('printAutorIme').innerText = korisnik;
-        //     document.getElementById('printVrijemeIspisa').innerText = vrijemeSada;
+            document.getElementById('printAutorIme').innerText = korisnik;
+            document.getElementById('printVrijemeIspisa').innerText = vrijemeSada;
 
-        //     // 2. Čuva lokalni zapis u pregledniku (za dugme "📜 Pregled štampe")
-        //     evidencijaStampe.unshift({ korisnik: korisnik, vrijeme: vrijemeSada });
-        //     localStorage.setItem("ino_print_log", JSON.stringify(evidencijaStampe));
+            evidencijaStampe.unshift({ korisnik: korisnik, vrijeme: vrijemeSada });
+            localStorage.setItem("ino_print_log", JSON.stringify(evidencijaStampe));
 
-        //     // 3. Šalje poziv na postojeći SCRIPT_URL (bez mijenjanja Apps Script koda)
-        //     let params = new URLSearchParams({
-        //         action: "updateRecord",
-        //         id: "PRINT_LOG",
-        //         br: "PRINT_LOG",
-        //         autor: korisnik,
-        //         fullname: korisnik,
-        //         vrijeme: vrijemeSada,
-        //         status: "ISPRINTAO DOKUMENT",
-        //         oznaka: "Štampa izvještaja — Kosturnica Visoko",
-        //         uzorci: "-",
-        //         komentar: `Dokument isprintao: korisnik({vrijemeSada})`
-        //     });
+            let params = new URLSearchParams({
+                action: "updateRecord",
+                id: "PRINT_LOG",
+                br: "PRINT_LOG",
+                autor: korisnik,
+                fullname: korisnik,
+                vrijeme: vrijemeSada,
+                status: "ISPRINTAO DOKUMENT",
+                oznaka: "Štampa izvještaja — Kosturnica Visoko",
+                uzorci: "-",
+                komentar: `Dokument isprintao: ${korisnik} (${vrijemeSada})`
+            });
 
-        //     let iframe = document.getElementById('hidden_iframe');
-        //     if (iframe) {
-        //         iframe.src = `SCRIPTURL?{params.toString()}`;
-        //     }
-        //     fetch(`SCRIPTURL?{params.toString()}`, { mode: 'no-cors' }).catch(() => {});
+            let iframe = document.getElementById('hidden_iframe');
+            if (iframe) {
+                iframe.src = `${SCRIPT_URL}?${params.toString()}`;
+            }
+            fetch(`${SCRIPT_URL}?${params.toString()}`, { mode: 'no-cors' }).catch(() => {});
 
-        //     // 4. Pokreće prozor za štampu / PDF
-        //     setTimeout(() => {
-        //         window.print();
-        //     }, 150);
-        // }
+            setTimeout(() => {
+                window.print();
+            }, 150);
+        }
 
-function handleLogin(e) {
-    e.preventDefault();
-    let fullname = document.getElementById('loginFullname').value.trim();
-    let pass = document.getElementById('loginPass').value.trim();
-    let btn = document.getElementById('btnLogin');
-    let err = document.getElementById('loginError');
-
-    if (pass !== "INO2026!" || fullname.length < 2) {
-        err.style.display = "block";
-        return;
-    }
-
-    btn.innerText = "Prijava...";
-    btn.disabled = true;
-
-    fetch(`${SCRIPT_URL}?action=login&fullname=${encodeURIComponent(fullname)}&password=${encodeURIComponent(pass)}`, { mode: 'no-cors' }).catch(() => {});
-
-    setTimeout(() => {
-        trenutniKorisnik = fullname;
-        document.getElementById('prijavljeniKorisnik').innerText = fullname;
-        document.getElementById('loginScreen').style.display = "none";
-        document.getElementById('mainApp').style.display = "block";
-        loadData();
-        renderStaticTables();
-    }, 400);
-}
-
-function handlePrint() {
-    let vrijemeSada = new Date().toLocaleString("bs-BA");
-    let korisnik = trenutniKorisnik || "Nepoznat korisnik";
-
-    document.getElementById('printAutorIme').innerText = korisnik;
-    document.getElementById('printVrijemeIspisa').innerText = vrijemeSada;
-
-    evidencijaStampe.unshift({ korisnik: korisnik, vrijeme: vrijemeSada });
-    localStorage.setItem("ino_print_log", JSON.stringify(evidencijaStampe));
-
-    let params = new URLSearchParams({
-        action: "updateRecord",
-        id: "PRINT_LOG",
-        br: "PRINT_LOG",
-        autor: korisnik,
-        fullname: korisnik,
-        vrijeme: vrijemeSada,
-        status: "ISPRINTAO DOKUMENT",
-        oznaka: "Štampa izvještaja — Kosturnica Visoko",
-        uzorci: "-",
-        komentar: `Dokument isprintao: ${korisnik} (${vrijemeSada})`
-    });
-
-    let iframe = document.getElementById('hidden_iframe');
-    if (iframe) {
-        iframe.src = `${SCRIPT_URL}?${params.toString()}`;
-    }
-    fetch(`${SCRIPT_URL}?${params.toString()}`, { mode: 'no-cors' }).catch(() => {});
-
-    setTimeout(() => {
-        window.print();
-    }, 150);
-}
-
-
-
-
-        
         function openPrintLogModal() {
             let listEl = document.getElementById('printLogList');
             if (!evidencijaStampe.length) {
@@ -910,7 +842,7 @@ function handlePrint() {
             } else {
                 listEl.innerHTML = evidencijaStampe.map((entry, idx) => `
                     <div class="log-item">
-                        <strong>#evidencijaStampe.length-idx</strong>—<strong>{entry.korisnik}</strong> je isprintao dokument u <span>${entry.vrijeme}</span>
+                        <strong>#${evidencijaStampe.length - idx}</strong> — <strong>${entry.korisnik}</strong> je isprintao dokument u <span>${entry.vrijeme}</span>
                     </div>
                 `).join('');
             }
@@ -922,7 +854,6 @@ function handlePrint() {
         }
 
         function renderStaticTables() {
-            // Tabela 8
             let tbodyKost = document.querySelector('#tblKosturnica tbody');
             tbodyKost.innerHTML = '';
             podaciKosturnica.forEach(item => {
@@ -936,7 +867,6 @@ function handlePrint() {
                 `;
             });
 
-            // Tabela 9
             let tbodyBez = document.querySelector('#tblBezPodudaranja tbody');
             tbodyBez.innerHTML = '';
             podaciBezPodudaranja.forEach(item => {
@@ -950,7 +880,6 @@ function handlePrint() {
                 `;
             });
 
-            // Tabela 10
             let tbodyPon = document.querySelector('#tblPonovnoUzorkovanje tbody');
             tbodyPon.innerHTML = '';
             podaciPonovnoUzorkovanje.forEach(item => {
@@ -966,12 +895,12 @@ function handlePrint() {
 
         function filterTable() {
             let search = document.getElementById('searchBar').value.toLowerCase();
-            let filtered = sviSlucajevi.filter(item => 
-                String(item.br).toLowerCase().includes(search) ||
-                item.oznaka.toLowerCase().includes(search) ||
-                String(item.uzorci).toLowerCase().includes(search) ||
-                item.komentar.toLowerCase().includes(search) ||
-                item.status.toLowerCase().includes(search)
+            let filtered = sviSlucajevi.filter(item =>
+                String(item.br || '').toLowerCase().includes(search) ||
+                String(item.oznaka || '').toLowerCase().includes(search) ||
+                String(item.uzorci || '').toLowerCase().includes(search) ||
+                String(item.komentar || '').toLowerCase().includes(search) ||
+                String(item.status || '').toLowerCase().includes(search)
             );
             renderMainTable(filtered);
         }
@@ -1107,5 +1036,3 @@ function handlePrint() {
     </script>
 </body>
 </html>
-
-

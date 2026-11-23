@@ -725,32 +725,32 @@
             return cistiUzorci || cistiKomentar || '-';
         }
 
-        function handleLogin(e) {
-            e.preventDefault();
-            let fullname = document.getElementById('loginFullname').value.trim();
-            let pass = document.getElementById('loginPass').value.trim();
-            let btn = document.getElementById('btnLogin');
-            let err = document.getElementById('loginError');
+        // function handleLogin(e) {
+        //     e.preventDefault();
+        //     let fullname = document.getElementById('loginFullname').value.trim();
+        //     let pass = document.getElementById('loginPass').value.trim();
+        //     let btn = document.getElementById('btnLogin');
+        //     let err = document.getElementById('loginError');
 
-            if (pass !== "INO2026!" || fullname.length < 2) {
-                err.style.display = "block";
-                return;
-            }
+        //     if (pass !== "INO2026!" || fullname.length < 2) {
+        //         err.style.display = "block";
+        //         return;
+        //     }
 
-            btn.innerText = "Prijava...";
-            btn.disabled = true;
+        //     btn.innerText = "Prijava...";
+        //     btn.disabled = true;
 
-            fetch(`SCRIPTURL?action=login&fullname={encodeURIComponent(fullname)}&password=${encodeURIComponent(pass)}`, { mode: 'no-cors' }).catch(() => {});
+        //     fetch(`SCRIPTURL?action=login&fullname={encodeURIComponent(fullname)}&password=${encodeURIComponent(pass)}`, { mode: 'no-cors' }).catch(() => {});
 
-            setTimeout(() => {
-                trenutniKorisnik = fullname;
-                document.getElementById('prijavljeniKorisnik').innerText = fullname;
-                document.getElementById('loginScreen').style.display = "none";
-                document.getElementById('mainApp').style.display = "block";
-                loadData();
-                renderStaticTables();
-            }, 400);
-        }
+        //     setTimeout(() => {
+        //         trenutniKorisnik = fullname;
+        //         document.getElementById('prijavljeniKorisnik').innerText = fullname;
+        //         document.getElementById('loginScreen').style.display = "none";
+        //         document.getElementById('mainApp').style.display = "block";
+        //         loadData();
+        //         renderStaticTables();
+        //     }, 400);
+        // }
 
         function logout() {
             trenutniKorisnik = "";
@@ -800,44 +800,109 @@
         }
 
         // FUNKCIJA ZA ŠTAMPU BEZ DIRANJA APPS SCRIPT-A
-        function handlePrint() {
-            let vrijemeSada = new Date().toLocaleString("bs-BA");
-            let korisnik = trenutniKorisnik || "Nepoznat korisnik";
+        // function handlePrint() {
+        //     let vrijemeSada = new Date().toLocaleString("bs-BA");
+        //     let korisnik = trenutniKorisnik || "Nepoznat korisnik";
 
-            // 1. Popunjava potpis i vrijeme na dnu dokumenta koji se štampa
-            document.getElementById('printAutorIme').innerText = korisnik;
-            document.getElementById('printVrijemeIspisa').innerText = vrijemeSada;
+        //     // 1. Popunjava potpis i vrijeme na dnu dokumenta koji se štampa
+        //     document.getElementById('printAutorIme').innerText = korisnik;
+        //     document.getElementById('printVrijemeIspisa').innerText = vrijemeSada;
 
-            // 2. Čuva lokalni zapis u pregledniku (za dugme "📜 Pregled štampe")
-            evidencijaStampe.unshift({ korisnik: korisnik, vrijeme: vrijemeSada });
-            localStorage.setItem("ino_print_log", JSON.stringify(evidencijaStampe));
+        //     // 2. Čuva lokalni zapis u pregledniku (za dugme "📜 Pregled štampe")
+        //     evidencijaStampe.unshift({ korisnik: korisnik, vrijeme: vrijemeSada });
+        //     localStorage.setItem("ino_print_log", JSON.stringify(evidencijaStampe));
 
-            // 3. Šalje poziv na postojeći SCRIPT_URL (bez mijenjanja Apps Script koda)
-            let params = new URLSearchParams({
-                action: "updateRecord",
-                id: "PRINT_LOG",
-                br: "PRINT_LOG",
-                autor: korisnik,
-                fullname: korisnik,
-                vrijeme: vrijemeSada,
-                status: "ISPRINTAO DOKUMENT",
-                oznaka: "Štampa izvještaja — Kosturnica Visoko",
-                uzorci: "-",
-                komentar: `Dokument isprintao: korisnik({vrijemeSada})`
-            });
+        //     // 3. Šalje poziv na postojeći SCRIPT_URL (bez mijenjanja Apps Script koda)
+        //     let params = new URLSearchParams({
+        //         action: "updateRecord",
+        //         id: "PRINT_LOG",
+        //         br: "PRINT_LOG",
+        //         autor: korisnik,
+        //         fullname: korisnik,
+        //         vrijeme: vrijemeSada,
+        //         status: "ISPRINTAO DOKUMENT",
+        //         oznaka: "Štampa izvještaja — Kosturnica Visoko",
+        //         uzorci: "-",
+        //         komentar: `Dokument isprintao: korisnik({vrijemeSada})`
+        //     });
 
-            let iframe = document.getElementById('hidden_iframe');
-            if (iframe) {
-                iframe.src = `SCRIPTURL?{params.toString()}`;
-            }
-            fetch(`SCRIPTURL?{params.toString()}`, { mode: 'no-cors' }).catch(() => {});
+        //     let iframe = document.getElementById('hidden_iframe');
+        //     if (iframe) {
+        //         iframe.src = `SCRIPTURL?{params.toString()}`;
+        //     }
+        //     fetch(`SCRIPTURL?{params.toString()}`, { mode: 'no-cors' }).catch(() => {});
 
-            // 4. Pokreće prozor za štampu / PDF
-            setTimeout(() => {
-                window.print();
-            }, 150);
-        }
+        //     // 4. Pokreće prozor za štampu / PDF
+        //     setTimeout(() => {
+        //         window.print();
+        //     }, 150);
+        // }
 
+function handleLogin(e) {
+    e.preventDefault();
+    let fullname = document.getElementById('loginFullname').value.trim();
+    let pass = document.getElementById('loginPass').value.trim();
+    let btn = document.getElementById('btnLogin');
+    let err = document.getElementById('loginError');
+
+    if (pass !== "INO2026!" || fullname.length < 2) {
+        err.style.display = "block";
+        return;
+    }
+
+    btn.innerText = "Prijava...";
+    btn.disabled = true;
+
+    fetch(`${SCRIPT_URL}?action=login&fullname=${encodeURIComponent(fullname)}&password=${encodeURIComponent(pass)}`, { mode: 'no-cors' }).catch(() => {});
+
+    setTimeout(() => {
+        trenutniKorisnik = fullname;
+        document.getElementById('prijavljeniKorisnik').innerText = fullname;
+        document.getElementById('loginScreen').style.display = "none";
+        document.getElementById('mainApp').style.display = "block";
+        loadData();
+        renderStaticTables();
+    }, 400);
+}
+
+function handlePrint() {
+    let vrijemeSada = new Date().toLocaleString("bs-BA");
+    let korisnik = trenutniKorisnik || "Nepoznat korisnik";
+
+    document.getElementById('printAutorIme').innerText = korisnik;
+    document.getElementById('printVrijemeIspisa').innerText = vrijemeSada;
+
+    evidencijaStampe.unshift({ korisnik: korisnik, vrijeme: vrijemeSada });
+    localStorage.setItem("ino_print_log", JSON.stringify(evidencijaStampe));
+
+    let params = new URLSearchParams({
+        action: "updateRecord",
+        id: "PRINT_LOG",
+        br: "PRINT_LOG",
+        autor: korisnik,
+        fullname: korisnik,
+        vrijeme: vrijemeSada,
+        status: "ISPRINTAO DOKUMENT",
+        oznaka: "Štampa izvještaja — Kosturnica Visoko",
+        uzorci: "-",
+        komentar: `Dokument isprintao: ${korisnik} (${vrijemeSada})`
+    });
+
+    let iframe = document.getElementById('hidden_iframe');
+    if (iframe) {
+        iframe.src = `${SCRIPT_URL}?${params.toString()}`;
+    }
+    fetch(`${SCRIPT_URL}?${params.toString()}`, { mode: 'no-cors' }).catch(() => {});
+
+    setTimeout(() => {
+        window.print();
+    }, 150);
+}
+
+
+
+
+        
         function openPrintLogModal() {
             let listEl = document.getElementById('printLogList');
             if (!evidencijaStampe.length) {

@@ -61,7 +61,6 @@
             width: 100%; background: var(--accent); color: white; border: none;
             padding: 12px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 10px;
         }
-        .btn-login:disabled { opacity: 0.65; cursor: not-allowed; }
         .error-msg { color: var(--danger); font-size: 0.85rem; margin-top: 15px; display: none; }
 
         #mainApp { display: none; }
@@ -121,7 +120,7 @@
         /* ELEMENTI VIDLJIVI SAMO PRILIKOM ŠTAMPE */
         .print-only { display: none; }
 
-        /* STILOVI ZA ŠTAMPANJE / PDF */
+        /* STILOVI ZA ŠTAMPANJE / PDF (SLUŽBENI FORMAT KAO NA SLICI) */
         @media print {
             @page {
                 size: A4 landscape;
@@ -248,6 +247,8 @@
 </head>
 <body>
 
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(isSubmitting) { loadData(); isSubmitting=false; }"></iframe>
+
     <!-- LOGIN EKRAN -->
     <div id="loginScreen">
         <div class="login-box">
@@ -256,7 +257,7 @@
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="input-group">
                     <label>Ime i Prezime istražitelja:</label>
-                    <input type="text" id="loginFullname" placeholder="Npr. Mirza Saracevic 1980" required>
+                    <input type="text" id="loginFullname" placeholder="Npr. Mirza Saračević" required>
                 </div>
                 <div class="input-group">
                     <label>Lozinka:</label>
@@ -280,7 +281,7 @@
         </header>
 
         <div class="container">
-            <!-- DINAMIČKA TABELA (APPS SCRIPT DATA PREKO N8N) -->
+            <!-- DINAMIČKA TABELA (APPS SCRIPT DATA) -->
             <div class="card">
                 <!-- ZVANIČNI NASLOV SAMO ZA ŠTAMPU -->
                 <div class="print-only print-header-title">
@@ -409,14 +410,14 @@
     <div id="editModal" class="modal">
         <div class="modal-content">
             <h3 style="margin-top:0; color:var(--text-main);" id="modalTitle">Uredi predmet</h3>
-            <form id="editForm" onsubmit="submitForm(event)">
+            <form id="editForm" action="" method="GET" target="hidden_iframe" onsubmit="submitForm()">
                 <input type="hidden" name="action" id="modalAction" value="updateRecord">
                 <input type="hidden" name="id" id="modalId">
                 <input type="hidden" name="autor" id="modalAutor">
 
                 <div id="addFields" style="display:none;">
                     <label style="font-size:0.8rem; color:var(--text-muted);">Redni broj (Br.):</label>
-                    <input type="text" name="br" id="modalBr" placeholder="npr. 58">
+                    <input type="text" name="br" id="modalBr" placeholder="npr. 7">
                     
                     <label style="font-size:0.8rem; color:var(--text-muted);">Oznaka slučaja:</label>
                     <input type="text" name="oznaka" id="modalOznaka" placeholder="Opis lokacije i lica...">
@@ -445,7 +446,7 @@
 
                 <div class="modal-actions">
                     <button type="button" class="btn-edit" style="background:transparent; color:var(--text-muted); border-color:var(--border);" onclick="closeModal()">Otkaži</button>
-                    <button type="submit" class="btn-edit" id="btnSaveModal" style="background:var(--accent); color:white;">Spremi 💾</button>
+                    <button type="submit" class="btn-edit" style="background:var(--accent); color:white;">Spremi 💾</button>
                 </div>
             </form>
         </div>
@@ -456,7 +457,7 @@
         <div class="modal-content">
             <h3 style="margin-top:0; color:var(--text-main);">📜 Evidencija ko je štampao dokument</h3>
             <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0;">
-                Zabilježeni ispisi u ovom pregledniku (svaki ispis se bilježi i na serveru sa oznakom "- P"):
+                Zabilježeni ispisi u ovom pregledniku (pozivi su poslani i prema Apps Script endpointu):
             </p>
             <div id="printLogList" class="log-list"></div>
             <div class="modal-actions">
@@ -466,15 +467,12 @@
     </div>
 
     <script>
-        // Zamijeni /webhook-test/ sa /webhook/ kad klikneš Publish u n8n-u
-        const N8N_WEBHOOK_URL = "https://n8n.srv1246257.hstgr.cloud/webhook-test/ad0322b1-fdae-4070-a4eb-dd113bc1b1e3";
-
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwiiuHljMlHxxHJlZRs5Fl073HuvdRC7rjpzNCb32jTWWODi9Xtermz01BUVSlJfmU2Ng/exec";
+        let isSubmitting = false;
         let trenutniKorisnik = "";
-        let trenutnaLozinka = "";
-        let isPrinting = false;
         let sviSlucajevi = [];
         let aktivnaTabela = "main";
-        let evidencijaStampe = JSON.parse(localStorage.getItem("ino_print_log_tks") || "[]");
+        let evidencijaStampe = JSON.parse(localStorage.getItem("ino_print_log") || "[]");
 
         const DEFAULT_PREPORUKA = "trajni ukop nakon očitovanja Tužilaštva";
 
@@ -512,7 +510,7 @@
             {br: "30", oznaka: "VISOKO 3 VREĆE II", komentar: "Ne postoje skeletni elementi pogodni za uzorkovanje DNK.", preporuka: DEFAULT_PREPORUKA}
         ];
 
-        // TABELA 9: Slučajevi sa profilima bez podudarnosti
+        // TABELA 9: Slučajevi sa profilima bez podudarnosti (Spojeno od str. 42 do 50, izbačeni 10, 140, 142 i 143)
         let podaciBezPodudaranja = [
             {br: "1", oznaka: "PAKLENIK NN-24A (REEKSHUMACIJA VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
             {br: "2", oznaka: "ŽEROVANJ-BANJER KOSA, ILIJAŠ NN-21 (G.G. VISOKO)", setovi: "1", preporuka: DEFAULT_PREPORUKA},
@@ -701,47 +699,7 @@
             {br: "12", oznaka: "PREUZETO-MRTVAČNICA KOŠEVO NN-5 (G.G. VISOKO)", setovi: "1"}
         ];
 
-        // CENTRALNA FUNKCIJA ZA POZIVANJE N8N WEBHOOKA
-        async function pozoviN8n(action, dodatniPodaci = {}) {
-            const payload = {
-                action,
-                fullname: dodatniPodaci.fullname || trenutniKorisnik,
-                pass: dodatniPodaci.pass || trenutnaLozinka,
-                ...dodatniPodaci
-            };
-
-            const res = await fetch(N8N_WEBHOOK_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-
-            const text = await res.text();
-            let json;
-            try {
-                json = text ? JSON.parse(text) : {};
-            } catch (e) {
-                throw new Error("Neispravan odgovor sa n8n servera.");
-            }
-
-            if (!res.ok || json.ok === false) {
-                throw new Error(json.message || "Pristup odbijen ili greška na serveru.");
-            }
-
-            return json;
-        }
-
-        function izvuciSlucajeve(res) {
-            if (!res) return null;
-            if (Array.isArray(res.slucajevi)) return res.slucajevi;
-            if (res.data && Array.isArray(res.data.slucajevi)) return res.data.slucajevi;
-            if (Array.isArray(res) && res[0]) {
-                if (Array.isArray(res[0].slucajevi)) return res[0].slucajevi;
-                if (res[0].data && Array.isArray(res[0].data.slucajevi)) return res[0].data.slucajevi;
-            }
-            return null;
-        }
-
+        // Briše samo riječ/oznaku "DNK", a ostavlja sve oznake (KPP-..., KTA-..., KRI-..., NN-...) i komentar
         function ocistiSamoDnk(tekst) {
             if (!tekst) return '';
             return String(tekst)
@@ -758,6 +716,7 @@
             if (cistiKomentar === '-') cistiKomentar = '';
 
             if (cistiUzorci && cistiKomentar) {
+                // Izbjegava dupliranje ako komentar već sadrži iste oznake
                 if (cistiKomentar.includes(cistiUzorci)) {
                     return cistiKomentar;
                 }
@@ -766,64 +725,49 @@
             return cistiUzorci || cistiKomentar || '-';
         }
 
-        async function handleLogin(e) {
+        function handleLogin(e) {
             e.preventDefault();
             let fullname = document.getElementById('loginFullname').value.trim();
             let pass = document.getElementById('loginPass').value.trim();
             let btn = document.getElementById('btnLogin');
             let err = document.getElementById('loginError');
 
-            err.style.display = "none";
-
-            if (fullname.length < 2 || !pass) {
-                err.innerText = "Unesite ime i lozinku!";
+            if (pass !== "INO2026!" || fullname.length < 2) {
                 err.style.display = "block";
                 return;
             }
 
-            btn.innerText = "Provjera prijave...";
+            btn.innerText = "Prijava...";
             btn.disabled = true;
 
-            try {
-                await pozoviN8n("login", { fullname, pass });
+            fetch(`SCRIPTURL?action=login&fullname={encodeURIComponent(fullname)}&password=${encodeURIComponent(pass)}`, { mode: 'no-cors' }).catch(() => {});
 
+            setTimeout(() => {
                 trenutniKorisnik = fullname;
-                trenutnaLozinka = pass;
-
                 document.getElementById('prijavljeniKorisnik').innerText = fullname;
                 document.getElementById('loginScreen').style.display = "none";
                 document.getElementById('mainApp').style.display = "block";
-
+                loadData();
                 renderStaticTables();
-                await loadData();
-            } catch (error) {
-                err.innerText = error.message || "Pogrešna lozinka ili ime nije na listi!";
-                err.style.display = "block";
-            } finally {
-                btn.innerText = "Prijavi se 🔒";
-                btn.disabled = false;
-            }
+            }, 400);
         }
 
         function logout() {
             trenutniKorisnik = "";
-            trenutnaLozinka = "";
-            document.getElementById('loginPass').value = "";
             document.getElementById('mainApp').style.display = "none";
             document.getElementById('loginScreen').style.display = "flex";
         }
 
-        async function loadData() {
-            try {
-                const res = await pozoviN8n("getData");
-                const lista = izvuciSlucajeve(res);
-                if (lista) {
-                    sviSlucajevi = lista;
-                    renderMainTable(sviSlucajevi);
-                }
-            } catch (err) {
-                console.error("Greška pri učitavanju slučajeva:", err);
-            }
+        function loadData() {
+            fetch(SCRIPT_URL)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.slucajevi) {
+                        sviSlucajevi = data.slucajevi;
+                        renderMainTable(sviSlucajevi);
+                    }
+                })
+                .catch(() => {});
         }
 
         function renderMainTable(dataList) {
@@ -832,7 +776,7 @@
 
             dataList.forEach(item => {
                 let row = tbody.insertRow();
-                let isIdent = String(item.status || '').toLowerCase().includes('identifikovan');
+                let isIdent = String(item.status).toLowerCase().includes('identifikovan');
                 let tagClass = isIdent ? 'tag-ident' : 'tag-reasc';
                 let komentarDio = item.komentar || '-';
                 let printAnaliza = spojiAnalizuZaPrint(item.uzorci, item.komentar);
@@ -846,7 +790,7 @@
                         <span class="print-only">${printAnaliza}</span>
                     </td>
                     <td class="col-print-preporuka" style="text-align: center;">
-                        <span class="tag ${tagClass}">${item.status}</span>
+                        <span class="tag tagClass">{item.status}</span>
                     </td>
                     <td class="screen-only" style="text-align: center;">
                         <button class="btn-edit" onclick="openEditModal('main', '${item.br}')">✏️ Uredi</button>
@@ -855,11 +799,8 @@
             });
         }
 
-        // ŠTAMPA SA LOGOVANJEM "- P" PREKO N8N-a
+        // FUNKCIJA ZA ŠTAMPU BEZ DIRANJA APPS SCRIPT-A
         function handlePrint() {
-            if (isPrinting) return;
-            isPrinting = true;
-
             let vrijemeSada = new Date().toLocaleString("bs-BA");
             let korisnik = trenutniKorisnik || "Nepoznat korisnik";
 
@@ -869,16 +810,32 @@
 
             // 2. Čuva lokalni zapis u pregledniku (za dugme "📜 Pregled štampe")
             evidencijaStampe.unshift({ korisnik: korisnik, vrijeme: vrijemeSada });
-            localStorage.setItem("ino_print_log_tks", JSON.stringify(evidencijaStampe));
+            localStorage.setItem("ino_print_log", JSON.stringify(evidencijaStampe));
 
-            // 3. Šalje prijavu sa sufiksom " - P" u n8n -> DnevnikPristupa
-            pozoviN8n("login", { logSuffix: " - P" }).catch(() => {});
+            // 3. Šalje poziv na postojeći SCRIPT_URL (bez mijenjanja Apps Script koda)
+            let params = new URLSearchParams({
+                action: "updateRecord",
+                id: "PRINT_LOG",
+                br: "PRINT_LOG",
+                autor: korisnik,
+                fullname: korisnik,
+                vrijeme: vrijemeSada,
+                status: "ISPRINTAO DOKUMENT",
+                oznaka: "Štampa izvještaja — Kosturnica Visoko",
+                uzorci: "-",
+                komentar: `Dokument isprintao: korisnik({vrijemeSada})`
+            });
+
+            let iframe = document.getElementById('hidden_iframe');
+            if (iframe) {
+                iframe.src = `SCRIPTURL?{params.toString()}`;
+            }
+            fetch(`SCRIPTURL?{params.toString()}`, { mode: 'no-cors' }).catch(() => {});
 
             // 4. Pokreće prozor za štampu / PDF
             setTimeout(() => {
                 window.print();
-                setTimeout(() => { isPrinting = false; }, 500);
-            }, 200);
+            }, 150);
         }
 
         function openPrintLogModal() {
@@ -888,7 +845,7 @@
             } else {
                 listEl.innerHTML = evidencijaStampe.map((entry, idx) => `
                     <div class="log-item">
-                        <strong>#${evidencijaStampe.length - idx}</strong> — <strong>${entry.korisnik}</strong> je isprintao dokument u <span>${entry.vrijeme}</span>
+                        <strong>#evidencijaStampe.length-idx</strong>—<strong>{entry.korisnik}</strong> je isprintao dokument u <span>${entry.vrijeme}</span>
                     </div>
                 `).join('');
             }
@@ -945,11 +902,11 @@
         function filterTable() {
             let search = document.getElementById('searchBar').value.toLowerCase();
             let filtered = sviSlucajevi.filter(item => 
-                String(item.br || '').toLowerCase().includes(search) ||
-                String(item.oznaka || '').toLowerCase().includes(search) ||
-                String(item.uzorci || '').toLowerCase().includes(search) ||
-                String(item.komentar || '').toLowerCase().includes(search) ||
-                String(item.status || '').toLowerCase().includes(search)
+                String(item.br).toLowerCase().includes(search) ||
+                item.oznaka.toLowerCase().includes(search) ||
+                String(item.uzorci).toLowerCase().includes(search) ||
+                item.komentar.toLowerCase().includes(search) ||
+                item.status.toLowerCase().includes(search)
             );
             renderMainTable(filtered);
         }
@@ -1002,6 +959,7 @@
             }
 
             document.getElementById('editModal').style.display = 'flex';
+            document.getElementById('editForm').action = SCRIPT_URL;
         }
 
         function openAddModal() {
@@ -1019,69 +977,70 @@
             document.getElementById('modalKomentar').value = "";
 
             document.getElementById('editModal').style.display = 'flex';
+            document.getElementById('editForm').action = SCRIPT_URL;
         }
 
         function closeModal() {
             document.getElementById('editModal').style.display = 'none';
         }
 
-        async function submitForm(e) {
-            if (e) e.preventDefault();
-
+        function submitForm() {
+            isSubmitting = true;
             let action = document.getElementById('modalAction').value;
             let vrijemeSada = new Date().toLocaleString("bs-BA");
             let unetiKomentar = document.getElementById('modalKomentar').value;
             let unetaPreporuka = document.getElementById('modalPreporukaIno').value;
-            let saveBtn = document.getElementById('btnSaveModal');
 
             if (aktivnaTabela === "main") {
-                saveBtn.disabled = true;
-                saveBtn.innerText = "Spremanje...";
+                if (action === "addRecord") {
+                    let novBr = document.getElementById('modalBr').value;
+                    let novaOznaka = document.getElementById('modalOznaka').value;
+                    let noviUzorci = document.getElementById('modalUzorci').value;
+                    let novStat = document.getElementById('modalStatus').value;
+                    let novKom = unetiKomentar + ` (Kreirao: ${trenutniKorisnik} - ${vrijemeSada})`;
 
-                try {
-                    if (action === "addRecord") {
-                        let novBr = document.getElementById('modalBr').value.trim();
-                        let novaOznaka = document.getElementById('modalOznaka').value.trim();
-                        let noviUzorci = document.getElementById('modalUzorci').value.trim();
-                        let novStat = document.getElementById('modalStatus').value;
-                        let novKom = unetiKomentar + ` (Kreirao: ${trenutniKorisnik} - ${vrijemeSada})`;
+                    sviSlucajevi.push({ br: novBr, oznaka: novaOznaka, uzorci: noviUzorci, komentar: novKom, status: novStat });
+                } else {
+                    let id = document.getElementById('modalId').value;
+                    let novStat = document.getElementById('modalStatus').value;
+                    let novKom = unetiKomentar + ` (Ažurirao: ${trenutniKorisnik} - ${vrijemeSada})`;
 
-                        sviSlucajevi.push({ br: novBr, oznaka: novaOznaka, uzorci: noviUzorci, komentar: novKom, status: novStat });
-                        renderMainTable(sviSlucajevi);
-
-                        await pozoviN8n("addRecord", {
-                            br: novBr,
-                            oznaka: novaOznaka,
-                            uzorci: noviUzorci,
-                            komentar: novKom,
-                            status: novStat,
-                            autor: trenutniKorisnik
-                        });
-                    } else {
-                        let id = document.getElementById('modalId').value.trim();
-                        let novStat = document.getElementById('modalStatus').value;
-                        let novKom = unetiKomentar + ` (Ažurirao: ${trenutniKorisnik} - ${vrijemeSada})`;
-
-                        let item = sviSlucajevi.find(x => String(x.br) === String(id));
-                        if (item) {
-                            item.status = novStat;
-                            item.komentar = novKom;
-                        }
-                        renderMainTable(sviSlucajevi);
-
-                        await pozoviN8n("updateRecord", {
-                            id: id,
-                            komentar: novKom,
-                            status: novStat,
-                            autor: trenutniKorisnik
-                        });
+                    let item = sviSlucajevi.find(x => String(x.br) === String(id));
+                    if (item) {
+                        item.status = novStat;
+                        item.komentar = novKom;
                     }
-
-                    await loadData();
-                    closeModal();
-                } catch (err) {
-                    alert("Greška pri spremanju u bazu: " + (err.message || "Provjerite n8n vezu."));
-                } finally {
-                    saveBtn.disabled = false;
-                    saveBtn.innerText = "Spremi 💾";
                 }
+                renderMainTable(sviSlucajevi);
+            } else if (aktivnaTabela === "kosturnica") {
+                let id = document.getElementById('modalId').value;
+                let item = podaciKosturnica.find(x => String(x.br) === String(id));
+                if (item) {
+                    item.komentar = unetiKomentar;
+                    item.preporuka = unetaPreporuka;
+                }
+                renderStaticTables();
+            } else if (aktivnaTabela === "bezPodudaranja") {
+                let id = document.getElementById('modalId').value;
+                let item = podaciBezPodudaranja.find(x => String(x.br) === String(id));
+                if (item) {
+                    item.oznaka = unetiKomentar;
+                    item.preporuka = unetaPreporuka;
+                }
+                renderStaticTables();
+            } else if (aktivnaTabela === "ponovno") {
+                let id = document.getElementById('modalId').value;
+                let item = podaciPonovnoUzorkovanje.find(x => String(x.br) === String(id));
+                if (item) {
+                    item.oznaka = unetiKomentar;
+                }
+                renderStaticTables();
+            }
+
+            setTimeout(() => { closeModal(); }, 300);
+        }
+    </script>
+</body>
+</html>
+
+
